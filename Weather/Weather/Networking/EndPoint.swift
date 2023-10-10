@@ -14,7 +14,7 @@ struct EndPoint {
     
     private let urlInformation: URLInformation
     private let scheme: String = "https"
-    private let host: String = ""
+    private let host: String = "api.openweathermap.org"
     
     var url: URL? {
         var urlComponents = URLComponents()
@@ -27,21 +27,26 @@ struct EndPoint {
     }
     
     enum URLInformation {
-        case shortWeather
+        case weather(String)
+        case icon(String)
         
         var path: String {
             switch self {
-            case .shortWeather:
-                return ""
+            case .weather:
+                return "/data/2.5/weather"
+            case .icon(let name):
+                return "/img/w/\(name)"
             }
         }
         
         var queryItems: [URLQueryItem] {
-            var queryItems = [URLQueryItem]()
+            var queryItems: [URLQueryItem] = [.init(name: "appid", value: APIKeys.weather)]
             
             switch self {
-            case .shortWeather:
-                queryItems.append(.init(name: "", value: ""))
+            case .weather(let cityName):
+                queryItems.append(.init(name: "q", value: cityName))
+            case .icon:
+                break
             }
             
             return queryItems
