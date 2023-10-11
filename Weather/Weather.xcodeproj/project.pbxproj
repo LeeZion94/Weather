@@ -21,6 +21,7 @@
 		5BCAA95D2AD6B8F30083AEC6 /* WeeklyWeatherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCAA95C2AD6B8F30083AEC6 /* WeeklyWeatherTableViewCell.swift */; };
 		5BCAA95F2AD6BFE00083AEC6 /* DetailWeatherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCAA95E2AD6BFE00083AEC6 /* DetailWeatherTableViewCell.swift */; };
 		5BCAA9622AD6C6910083AEC6 /* WeeklyWeatherDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCAA9612AD6C6910083AEC6 /* WeeklyWeatherDTO.swift */; };
+		5BCAA9642AD6C8AA0083AEC6 /* DetailWeatherDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCAA9632AD6C8AA0083AEC6 /* DetailWeatherDTO.swift */; };
 		5BD9FD7A2AD4235C00EE70B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9FD792AD4235C00EE70B7 /* AppDelegate.swift */; };
 		5BD9FD7C2AD4235C00EE70B7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9FD7B2AD4235C00EE70B7 /* SceneDelegate.swift */; };
 		5BD9FD7E2AD4235C00EE70B7 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD9FD7D2AD4235C00EE70B7 /* WeatherViewController.swift */; };
@@ -42,6 +43,7 @@
 		5BCAA95C2AD6B8F30083AEC6 /* WeeklyWeatherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeatherTableViewCell.swift; sourceTree = "<group>"; };
 		5BCAA95E2AD6BFE00083AEC6 /* DetailWeatherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherTableViewCell.swift; sourceTree = "<group>"; };
 		5BCAA9612AD6C6910083AEC6 /* WeeklyWeatherDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyWeatherDTO.swift; sourceTree = "<group>"; };
+		5BCAA9632AD6C8AA0083AEC6 /* DetailWeatherDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherDTO.swift; sourceTree = "<group>"; };
 		5BD9FD762AD4235C00EE70B7 /* Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BD9FD792AD4235C00EE70B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5BD9FD7B2AD4235C00EE70B7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				5BCAA9612AD6C6910083AEC6 /* WeeklyWeatherDTO.swift */,
+				5BCAA9632AD6C8AA0083AEC6 /* DetailWeatherDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 			files = (
 				5BCAA9572AD691F70083AEC6 /* HourlyWeatherCollectionViewCell.swift in Sources */,
 				5BCAA9552AD68F6A0083AEC6 /* TodayWeatherView.swift in Sources */,
+				5BCAA9642AD6C8AA0083AEC6 /* DetailWeatherDTO.swift in Sources */,
 				5B95A5A92AD5A572007EBF0C /* APIKeys.swift in Sources */,
 				5BD9FD7E2AD4235C00EE70B7 /* WeatherViewController.swift in Sources */,
 				5BCAA95D2AD6B8F30083AEC6 /* WeeklyWeatherTableViewCell.swift in Sources */,

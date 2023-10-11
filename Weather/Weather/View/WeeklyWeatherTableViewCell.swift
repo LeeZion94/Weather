@@ -70,8 +70,11 @@ final class WeeklyWeatherTableViewCell: UITableViewCell, ReuseIdentifiable {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setUpContents(day: String, imageName: String, maxTemperature: String, minTemperature: String) {
-        
+    func setUpContents(weeklyWeatherDTO: WeeklyWeatherDTO) {
+        dayLabel.text = weeklyWeatherDTO.day
+        weatherImageView.image = UIImage(named: weeklyWeatherDTO.imageName)
+        maxTemperatureLabel.text = weeklyWeatherDTO.maxTemperature
+        minTemperatureLabel.text = weeklyWeatherDTO.minTemperature
     }
     
     private func configureUI() {

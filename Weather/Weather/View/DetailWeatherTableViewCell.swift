@@ -80,6 +80,13 @@ final class DetailWeatherTableViewCell: UITableViewCell, ReuseIdentifiable {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setUpContents(detailWeatherDTO: DetailWeatherDTO) {
+        leftTitleLabel.text = detailWeatherDTO.leftTitle
+        leftValueLabel.text = detailWeatherDTO.leftValue
+        rightTitleLabel.text = detailWeatherDTO.rightTitle
+        rightValueLabel.text = detailWeatherDTO.rightValue
+    }
+    
     private func configureUI() {
         [leftTitleLabel, leftValueLabel].forEach {
             leftStackView.addArrangedSubview($0)
