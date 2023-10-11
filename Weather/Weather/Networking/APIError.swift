@@ -8,5 +8,7 @@
 import Foundation
 
 enum APIError: LocalizedError {
-    case error
+    case invalidUrl
+    case httpError
+    case decodingError
 }

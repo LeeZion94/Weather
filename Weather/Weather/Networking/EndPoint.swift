@@ -27,8 +27,8 @@ struct EndPoint {
     }
     
     enum URLInformation {
-        case weather(String)
-        case icon(String)
+        case weather(cityName: String)
+        case icon(iconName: String)
         
         var path: String {
             switch self {

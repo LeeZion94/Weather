@@ -18,7 +18,7 @@ final class URLSessionProvider: URLSessionProviderType {
     
     func dataTask(url: URL?) -> Observable<Result<Data, APIError>> {
         guard let urlRequest = setUpUrlRequest(url: url) else {
-            return Observable.just(.failure(.error))
+            return Observable.just(.failure(.invalidUrl))
         }
         
         return URLSession.shared.rx.data(request: urlRequest)
@@ -26,11 +26,14 @@ final class URLSessionProvider: URLSessionProviderType {
                 return .success(data)
             }
             .catch({ error in
-                return Observable.just(Result.failure(.error))
+                return Observable.just(Result.failure(.httpError))
             })
             .asObservable()
     }
-    
+}
+
+// MARK: - Private
+extension URLSessionProvider {
     private func setUpUrlRequest(url: URL?) -> URLRequest? {
         guard let url else { return nil }
         var urlRequest = URLRequest(url: url)
