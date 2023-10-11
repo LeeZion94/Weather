@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let urlSessionProvider: URLSessionProviderType = URLSessionProvider()
         let weatherRepository: WeatherRepositoryType = WeatherRepository(urlSessionProvider: urlSessionProvider)
         let viewModel: WeatherViewModel = WeatherViewModel(weatherRepository: weatherRepository)
-        let weatherViewController = WeatherViewController(viewModel: viewModel)
+        let weatherViewController = WeatherViewController(viewModel: viewModel, cityName: "seoul")
         
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = weatherViewController

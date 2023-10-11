@@ -12,7 +12,7 @@ import RxCocoa
 
 final class WeatherViewModel {
     struct Input {
-        let weatherTrigger: Observable<Void>
+        let weatherTrigger: Observable<String>
     }
 
     struct Output {
@@ -26,9 +26,7 @@ final class WeatherViewModel {
     }
     
     func transform(input: Input) -> Output {
-        let cityName = "seoul"
-        
-        let forecastResult: Observable<ForecastResult?> = input.weatherTrigger.flatMap {
+        let forecastResult: Observable<ForecastResult?> = input.weatherTrigger.flatMap { cityName in
             return self.weatherRepository.fetchWeatherData(cityName: cityName).map { result in
                 switch result {
                 case .success(let forecastResult):
@@ -37,7 +35,7 @@ final class WeatherViewModel {
                     return nil
                 }
             }
-        }
+        }.share()
         
         return Output(forecastResult: forecastResult)
     }

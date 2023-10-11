@@ -10,12 +10,14 @@ import RxSwift
 
 final class WeatherViewController: UIViewController {
     private let viewModel: WeatherViewModel
+    private let cityName: String
     
     private var disposeBag = DisposeBag()
-    private var weatherTrigger = PublishSubject<Void>()
+    private var weatherTrigger = PublishSubject<String>()
     
-    init(viewModel: WeatherViewModel) {
+    init(viewModel: WeatherViewModel, cityName: String) {
         self.viewModel = viewModel
+        self.cityName = cityName
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,7 +34,7 @@ final class WeatherViewController: UIViewController {
         setUpController()
         bind()
         
-        weatherTrigger.onNext(Void())
+        weatherTrigger.onNext(cityName)
     }
     
     private func configureUI() {
@@ -55,7 +57,7 @@ extension WeatherViewController {
         let output = viewModel.transform(input: input)
         
         output.forecastResult.bind { forecastResult in
-            print(forecastResult)
+            print(forecastResult!)
         }.disposed(by: disposeBag)
     }
 }
