@@ -6,10 +6,11 @@
 //
 
 struct ForecastResult: Decodable {
-    let cod: String
-    let message: Int
+//    let cod: String
+//    let message: Int
     let cnt: Int
     let list: [Forecast]
+    let city: City
     
     struct Forecast: Decodable {
         let dt: Int
@@ -18,7 +19,7 @@ struct ForecastResult: Decodable {
         let clouds: Clouds
         let wind: Wind
         let visibility: Int
-        let pop: Int
+        let pop: Double
         let sys: Sys
         let dt_txt: String
         
@@ -46,7 +47,7 @@ struct ForecastResult: Decodable {
         }
         
         struct Wind: Decodable {
-            let speed: Int
+            let speed: Double
             let deg: Int
             let gust: Double
         }
@@ -62,7 +63,7 @@ struct ForecastResult: Decodable {
         let coord: Coord
         let country: String
         let population: Int
-        let timezon: Int
+        let timezone: Int
         let sunrise: Int
         let sunset: Int
         

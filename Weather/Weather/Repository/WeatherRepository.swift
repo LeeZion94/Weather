@@ -25,11 +25,21 @@ final class WeatherRepository: WeatherRepositoryType {
         return urlSessionProvider.dataTask(url: endPoint.url).map { result in
             switch result {
             case .success(let data):
-                guard let forecaseResult = try? JSONDecoder().decode(ForecastResult.self, from: data) else {
+//                guard let forecaseResult = try? JSONDecoder().decode(ForecastResult.self, from: data) else {
+//                    return .failure(.decodingError)
+//                }
+//                
+//                return .success(forecaseResult)
+                
+                do {
+                    let forecaseResult = try JSONDecoder().decode(ForecastResult.self, from: data)
+                    
+                    return .success(forecaseResult)
+                } catch {
+                    print(error)
                     return .failure(.decodingError)
                 }
                 
-                return .success(forecaseResult)
             case .failure(let error):
                 return .failure(error)
             }
