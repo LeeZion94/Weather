@@ -50,10 +50,10 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell, ReuseIdentifi
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setUpContents(hour: String, imageName: String, temperature: String) {
-        hourLabel.text = hour
-        weatherImageView.image = UIImage(named: imageName)
-        temperatureLabel.text = temperature
+    func setUpContents(hourlyweatherDTO: HourlyWeatherDTO) {
+        hourLabel.text = hourlyweatherDTO.hour
+        weatherImageView.image = UIImage(named: hourlyweatherDTO.imageName)
+        temperatureLabel.text = hourlyweatherDTO.temperature
     }
     
     private func configureUI() {
