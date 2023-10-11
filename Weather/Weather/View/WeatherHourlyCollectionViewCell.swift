@@ -1,13 +1,13 @@
 //
-//  TodayWeatherHourlyCollectionViewCell.swift
-//  Weather
+//  WeatherHourlyCollectionViewCell.swift
+//  WeatherHourlyCollectionViewCell
 //
 //  Created by Hyungmin Lee on 2023/10/11.
 //
 
 import UIKit
 
-final class TodayWeatherHourlyCollectionViewCell: UICollectionViewCell, ReuseIdentifiable {
+final class WeatherHourlyCollectionViewCell: UICollectionViewCell, ReuseIdentifiable {
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         
