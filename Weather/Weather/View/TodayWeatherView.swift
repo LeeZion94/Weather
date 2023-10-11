@@ -52,6 +52,12 @@ final class TodayWeatherView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setUpContents(cityName: String, weatherDescription: String, temperature: String) {
+        cityNameLabel.text = cityName
+        weatherDescriptionLabel.text = weatherDescription
+        temperatureLabel.text = temperature
+    }
+    
     private func configureUI() {
         [cityNameLabel, weatherDescriptionLabel, temperatureLabel].forEach {
             stackView.addArrangedSubview($0)

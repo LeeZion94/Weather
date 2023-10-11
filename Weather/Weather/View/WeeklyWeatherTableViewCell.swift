@@ -1,13 +1,13 @@
 //
-//  WeatherWeeklyTableViewCell.swift
-//  Weather
+//  WeeklyWeatherTableViewCell.swift
+//  WeeklyWeatherTableViewCell
 //
 //  Created by Hyungmin Lee on 2023/10/11.
 //
 
 import UIKit
 
-final class WeatherWeeklyTableViewCell: UITableViewCell, ReuseIdentifiable {
+final class WeeklyWeatherTableViewCell: UITableViewCell, ReuseIdentifiable {
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         
@@ -68,6 +68,10 @@ final class WeatherWeeklyTableViewCell: UITableViewCell, ReuseIdentifiable {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setUpContents(day: String, imageName: String, maxTemperature: String, minTemperature: String) {
+        
     }
     
     private func configureUI() {

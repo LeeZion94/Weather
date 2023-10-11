@@ -1,13 +1,13 @@
 //
-//  WeatherHourlyCollectionViewCell.swift
-//  WeatherHourlyCollectionViewCell
+//  HourlyWeatherCollectionViewCell.swift
+//  HourlyWeatherCollectionViewCell
 //
 //  Created by Hyungmin Lee on 2023/10/11.
 //
 
 import UIKit
 
-final class WeatherHourlyCollectionViewCell: UICollectionViewCell, ReuseIdentifiable {
+final class HourlyWeatherCollectionViewCell: UICollectionViewCell, ReuseIdentifiable {
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         
@@ -48,6 +48,12 @@ final class WeatherHourlyCollectionViewCell: UICollectionViewCell, ReuseIdentifi
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setUpContents(hour: String, imageName: String, temperature: String) {
+        hourLabel.text = hour
+        weatherImageView.image = UIImage(named: imageName)
+        temperatureLabel.text = temperature
     }
     
     private func configureUI() {

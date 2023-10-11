@@ -1,13 +1,13 @@
 //
-//  WeatherDetailTableViewCell.swift
-//  Weather
+//  DetailWeatherTableViewCell.swift
+//  DetailWeatherTableViewCell
 //
 //  Created by Hyungmin Lee on 2023/10/11.
 //
 
 import UIKit
 
-final class WeatherDetailTableViewCell: UITableViewCell, ReuseIdentifiable {
+final class DetailWeatherTableViewCell: UITableViewCell, ReuseIdentifiable {
     private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         
