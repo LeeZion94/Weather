@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 protocol WeatherRepositoryType {
-    func fetchWeatherData(cityName: String) -> Observable<Result<Weather, APIError>>
+    func fetchWeatherData(cityName: String) -> Observable<Result<ForecastResult, APIError>>
 }
 
 final class WeatherRepository: WeatherRepositoryType {
@@ -19,19 +19,20 @@ final class WeatherRepository: WeatherRepositoryType {
         self.urlSessionProvider = urlSessionProvider
     }
     
-    func fetchWeatherData(cityName: String) -> Observable<Result<Weather, APIError>> {
+    func fetchWeatherData(cityName: String) -> Observable<Result<ForecastResult, APIError>> {
         let endPoint = EndPoint(urlInformation: .weather(cityName: cityName))
         
         return urlSessionProvider.dataTask(url: endPoint.url).map { result in
             switch result {
             case .success(let data):
-                guard let weatherData = try? JSONDecoder().decode(Weather.self, from: data) else {
+                guard let forecaseResult = try? JSONDecoder().decode(ForecastResult.self, from: data) else {
                     return .failure(.decodingError)
                 }
                 
-                return .success(weatherData)
+                return .success(forecaseResult)
             case .failure(let error):
                 return .failure(error)
             }
         }.asObservable()
-    }}
+    }
+}

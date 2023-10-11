@@ -8,19 +8,17 @@
 import RxSwift
 import RxCocoa
 
-struct Input {
-    let weatherTrigger: Observable<Result<Weather, APIError>>
-}
 
-struct Output {
-    let weatherList: Observable<Weather>
-}
 
-protocol WeatherViewModelType {
-    func transform(input: Input) -> Output
-}
+final class WeatherViewModel {
+    struct Input {
+        let weatherTrigger: Observable<Void>
+    }
 
-final class WeatherViewModel: WeatherViewModelType {
+    struct Output {
+        let forecastResult: Observable<ForecastResult?>
+    }
+    
     private let weatherRepository: WeatherRepositoryType
     
     init(weatherRepository: WeatherRepositoryType) {
@@ -28,16 +26,19 @@ final class WeatherViewModel: WeatherViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        let output = input.weatherTrigger.map { result in
-            switch result {
-            case .success(let weather):
-                return weather
-            case .failure(let error):
-                print("TEST: error -> \(error)")
-                return Weather()
+        let cityName = "seoul"
+        
+        let forecastResult: Observable<ForecastResult?> = input.weatherTrigger.flatMap {
+            return self.weatherRepository.fetchWeatherData(cityName: cityName).map { result in
+                switch result {
+                case .success(let forecastResult):
+                    return forecastResult
+                case .failure:
+                    return nil
+                }
             }
         }
         
-        return Output(weatherList: output)
+        return Output(forecastResult: forecastResult)
     }
 }

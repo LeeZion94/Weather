@@ -6,11 +6,15 @@
 //
 
 import UIKit
+import RxSwift
 
 final class WeatherViewController: UIViewController {
-    private let viewModel: WeatherViewModelType
+    private let viewModel: WeatherViewModel
     
-    init(viewModel: WeatherViewModelType) {
+    private var disposeBag = DisposeBag()
+    private var weatherTrigger = PublishSubject<Void>()
+    
+    init(viewModel: WeatherViewModel) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -26,6 +30,9 @@ final class WeatherViewController: UIViewController {
         configureUI()
         setUpConstratins()
         setUpController()
+        bind()
+        
+        weatherTrigger.onNext(Void())
     }
     
     private func configureUI() {
@@ -38,6 +45,18 @@ final class WeatherViewController: UIViewController {
     
     private func setUpController() {
         view.backgroundColor = .systemBackground
+    }
+}
+
+// MARK: - Bind
+extension WeatherViewController {
+    private func bind() {
+        let input = WeatherViewModel.Input(weatherTrigger: weatherTrigger.asObservable())
+        let output = viewModel.transform(input: input)
+        
+        output.forecastResult.bind { forecastResult in
+            print(forecastResult)
+        }.disposed(by: disposeBag)
     }
 }
 
