@@ -12,10 +12,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let mainViewController = MainViewController()
+        let urlSessionProvider: URLSessionProviderType = URLSessionProvider()
+        let weatherRepository: WeatherRepositoryType = WeatherRepository(urlSessionProvider: urlSessionProvider)
+        let viewModel: WeatherViewModelType = WeatherViewModel(weatherRepository: weatherRepository)
+        let weatherViewController = WeatherViewController(viewModel: viewModel)
         
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = mainViewController
+        window?.rootViewController = weatherViewController
         window?.makeKeyAndVisible()
     }
 
