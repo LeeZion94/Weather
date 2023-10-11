@@ -33,7 +33,7 @@ struct EndPoint {
         var path: String {
             switch self {
             case .weather:
-                return "/data/2.5/weather"
+                return "/data/2.5/forecast"
             case .icon(let name):
                 return "/img/w/\(name)"
             }
