@@ -56,7 +56,7 @@ final class WeatherView: UIView {
     
     private func configureUI() {
         [backgroundImageView, todayWeatherView,
-         dayOfWeekView/*, hourlyWeatherViewController.view, detailWeatherViewController.view*/].forEach {
+         dayOfWeekView, hourlyWeatherViewController.view/*, detailWeatherViewController.view*/].forEach {
             addSubview($0)
         }
     }
@@ -65,7 +65,7 @@ final class WeatherView: UIView {
         setUpBackgroundImageViewConstraint()
         setUpTodayWeatherViewConstraint()
         setUpDayOfWeekViewConstraint()
-//        setUpHourlyWeatherViewConstraint()
+        setUpHourlyWeatherViewConstraint()
 //        setUpWeeklyWeatherViewConstraint()
     }
 }
@@ -126,18 +126,20 @@ extension WeatherView {
             hourlyWeatherView.leadingAnchor.constraint(equalTo: leadingAnchor),
             hourlyWeatherView.trailingAnchor.constraint(equalTo: trailingAnchor),
             hourlyWeatherView.topAnchor.constraint(equalTo: dayOfWeekView.bottomAnchor),
+            
+            hourlyWeatherView.heightAnchor.constraint(equalToConstant: 120)
         ])
     }
     
-    private func setUpWeeklyWeatherViewConstraint() {
-        guard let detailWeatherView = detailWeatherViewController.view,
-                let hourlyWeatherView = hourlyWeatherViewController.view else { return }
-        
-        NSLayoutConstraint.activate([
-            detailWeatherView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            detailWeatherView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            detailWeatherView.topAnchor.constraint(equalTo: hourlyWeatherView.bottomAnchor),
-            detailWeatherView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
+//    private func setUpWeeklyWeatherViewConstraint() {
+//        guard let detailWeatherView = detailWeatherViewController.view,
+//                let hourlyWeatherView = hourlyWeatherViewController.view else { return }
+//
+//        NSLayoutConstraint.activate([
+//            detailWeatherView.leadingAnchor.constraint(equalTo: leadingAnchor),
+//            detailWeatherView.trailingAnchor.constraint(equalTo: trailingAnchor),
+//            detailWeatherView.topAnchor.constraint(equalTo: hourlyWeatherView.bottomAnchor),
+//            detailWeatherView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+//        ])
+//    }
 }

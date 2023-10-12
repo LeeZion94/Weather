@@ -20,22 +20,25 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell, ReuseIdentifi
     private let hourLabel: UILabel = {
         let label = UILabel()
         
-        label.font  = .systemFont(ofSize: 10)
+        label.font  = .systemFont(ofSize: 15)
         label.textColor = .white
+        label.textAlignment = .center
         return label
     }()
     
     private let weatherImageView: UIImageView = {
         let imageView = UIImageView()
         
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     private let temperatureLabel: UILabel = {
         let label = UILabel()
         
-        label.font  = .systemFont(ofSize: 10)
+        label.font  = .systemFont(ofSize: 15)
         label.textColor = .white
+        label.textAlignment = .center
         return label
     }()
     
@@ -66,10 +69,13 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell, ReuseIdentifi
     
     private func setUpConstraints() {
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            stackView.trailingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -10),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            
+            weatherImageView.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 1.0),
+            weatherImageView.heightAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 1.0)
         ])
         
         temperatureLabel.setContentHuggingPriority(.init(1), for: .vertical)
