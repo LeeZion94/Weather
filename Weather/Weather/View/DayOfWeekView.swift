@@ -36,6 +36,9 @@ final class DayOfWeekView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        configureUI()
+        setUpContraints()
     }
     
     required init?(coder: NSCoder) {
@@ -61,5 +64,7 @@ final class DayOfWeekView: UIView {
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
         ])
+        
+        dayLabel.setContentHuggingPriority(.init(1), for: .horizontal)
     }
 }
