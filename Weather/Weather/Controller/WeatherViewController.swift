@@ -63,10 +63,43 @@ extension WeatherViewController {
         
         output.forecastResult.bind { forecastResult in
             print(forecastResult!)
-            
-            
-            
-            
+            DispatchQueue.main.async {
+                let todayWeatherDTO = TodayWeatherDTO(cityName: "London",
+                                                      weatherDescription: "clear sky",
+                                                      temperature: "15C")
+                self.weatherView.setUpTodayWeatherViewContents(todayWeatherDTO: todayWeatherDTO)
+                
+                self.weatherView.setUpDayOfWeekView(day: "수요일")
+                
+                let hourlyWeatherDTOList: [HourlyWeatherDTO] = [.init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
+                                                                .init(hour: "3오전", imageName: "testImage", temperature: "15C")]
+                self.weatherView.setUpHourlyWeatherViewContents(hourlyWeatherDTOList: hourlyWeatherDTOList)
+                
+                let weeklyWeatherDTOList: [WeeklyWeatherDTO] = [.init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),
+                                                                .init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),
+                                                                .init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),
+                                                                .init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),
+                                                                .init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),
+                                                                .init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),]
+                let detailWeatherDTOList: [DetailWeatherDTO] = [.init(leftTitle: "humidity", leftValue: "84%", rightTitle: "pressure", rightValue: "1010 hPa"),
+                                                                .init(leftTitle: "sea level pressure", leftValue: "1010 hPa", rightTitle: "ground level pressure", rightValue: "1009 hPa"),
+                                                                .init(leftTitle: "wind", leftValue: "ESE 299 m/s", rightTitle: "clouds", rightValue: "1 %"),]
+                self.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList, detailWeatherDTOList: detailWeatherDTOList)
+            }
         }.disposed(by: disposeBag)
     }
 }
