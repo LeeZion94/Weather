@@ -5,7 +5,7 @@
 //  Created by Hyungmin Lee on 2023/10/11.
 //
 
-struct WeeklyWeatherDTO {
+struct WeeklyWeatherDTO: Hashable {
     let day: String
     let imageName: String
     let maxTemperature: String

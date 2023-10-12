@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DetailWeatherDTO {
+struct DetailWeatherDTO: Hashable {
     let leftTitle: String
     let leftValue: String
     let rightTitle: String
