@@ -51,6 +51,11 @@ final class DetailWeatherViewController: UIViewController {
 
 // MARK: - Diffable DataSource
 extension DetailWeatherViewController {
+    func setUpContents(weeklyWeatherDTOList: [WeeklyWeatherDTO], detailWeatherDTOList: [DetailWeatherDTO]) {
+        setUpDiffabelDataSourceSnapShot(weeklyWeatherDTOList: weeklyWeatherDTOList,
+                                        detailWeatherDTOList: detailWeatherDTOList)
+    }
+    
     private func setUpDiffableDataSource() {
         diffableDataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
             if let weeklyWeatherDTO = item as? WeeklyWeatherDTO {
@@ -67,7 +72,8 @@ extension DetailWeatherViewController {
         })
     }
     
-    private func setUpDiffabelDataSourceSnapShot() {
+    private func setUpDiffabelDataSourceSnapShot(weeklyWeatherDTOList: [WeeklyWeatherDTO] = [],
+                                                 detailWeatherDTOList: [DetailWeatherDTO] = []) {
         var snapShot = NSDiffableDataSourceSnapshot<Section, AnyHashable>()
         
         snapShot.appendSections([.weekly, .detail])

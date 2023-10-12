@@ -41,6 +41,10 @@ final class HourlyWeatherViewController: UIViewController {
 
 // MARK: - Diffable DataSource
 extension HourlyWeatherViewController {
+    func setUpContents(hourlyWeatherDTOList: [HourlyWeatherDTO]) {
+        setUPDiffableDataSourceSnapShot(hourlyWeatherDTOList: hourlyWeatherDTOList)
+    }
+    
     private func setUpDiffableDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<HourlyWeatherCollectionViewCell,
                                                                     HourlyWeatherDTO> { cell, indexPath, hourlyWeatherDTO in
@@ -54,11 +58,11 @@ extension HourlyWeatherViewController {
         })
     }
     
-    private func setUPDiffableDataSourceSnapShot() {
+    private func setUPDiffableDataSourceSnapShot(hourlyWeatherDTOList: [HourlyWeatherDTO] = []) {
         var snapShot = NSDiffableDataSourceSnapshot<Section, HourlyWeatherDTO>()
         
         snapShot.appendSections([.main])
-        snapShot.appendItems([]) // TODO : Required Data
+        snapShot.appendItems(hourlyWeatherDTOList)
         diffableDataSource?.apply(snapShot)
     }
 }

@@ -42,6 +42,10 @@ final class DayOfWeekView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setUpContents(day: String) {
+        dayLabel.text = day
+    }
+    
     private func configureUI() {
         [dayLabel, todayLabel].forEach {
             stackView.addArrangedSubview($0)

@@ -63,6 +63,10 @@ extension WeatherViewController {
         
         output.forecastResult.bind { forecastResult in
             print(forecastResult!)
+            
+            
+            
+            
         }.disposed(by: disposeBag)
     }
 }

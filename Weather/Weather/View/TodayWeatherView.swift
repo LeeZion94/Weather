@@ -36,7 +36,7 @@ final class TodayWeatherView: UIView {
     private let temperatureLabel: UILabel = {
         let label = UILabel()
         
-        label.font = .systemFont(ofSize: 25)
+        label.font = .boldSystemFont(ofSize: 25)
         label.textColor = .white
         return label
     }()

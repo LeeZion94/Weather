@@ -69,6 +69,29 @@ final class WeatherView: UIView {
     }
 }
 
+// MARK: - setUpContents
+extension WeatherView {
+    func setUpTodayWeatherViewContents(todayWeatherDTO: TodayWeatherDTO) {
+        todayWeatherView.setUpContents(cityName: todayWeatherDTO.cityName,
+                                       weatherDescription: todayWeatherDTO.weatherDescription,
+                                       temperature: todayWeatherDTO.temperature)
+    }
+    
+    func setUpDayOfWeekView(day: String) {
+        dayOfWeekView.setUpContents(day: day)
+    }
+    
+    func setUpHourlyWeatherViewContents(hourlyWeatherDTOList: [HourlyWeatherDTO]) {
+        hourlyWeatherViewController.setUpContents(hourlyWeatherDTOList: hourlyWeatherDTOList)
+    }
+    
+    func setUpDetailWeatherViewContents(weeklyWeatherDTOList: [WeeklyWeatherDTO], detailWeatherDTOList: [DetailWeatherDTO]) {
+        detailWeatherViewController.setUpContents(weeklyWeatherDTOList: weeklyWeatherDTOList,
+                                                  detailWeatherDTOList: detailWeatherDTOList)
+    }
+}
+
+
 // MARK: - Constraints
 extension WeatherView {
     private func setUpBackgroundImageViewConstraint() {
