@@ -62,7 +62,7 @@ extension WeatherViewController {
         let output = viewModel.transform(input: input)
         
         output.forecastResult.bind { forecastResult in
-            print(forecastResult!)
+//            print(forecastResult!)
             DispatchQueue.main.async {
                 let todayWeatherDTO = TodayWeatherDTO(cityName: "London",
                                                       weatherDescription: "clear sky",
