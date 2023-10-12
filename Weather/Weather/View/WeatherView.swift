@@ -56,7 +56,7 @@ final class WeatherView: UIView {
     
     private func configureUI() {
         [backgroundImageView, todayWeatherView,
-         dayOfWeekView, hourlyWeatherViewController.view, detailWeatherViewController.view].forEach {
+         dayOfWeekView/*, hourlyWeatherViewController.view, detailWeatherViewController.view*/].forEach {
             addSubview($0)
         }
     }
@@ -64,8 +64,9 @@ final class WeatherView: UIView {
     private func setUpConstraints() {
         setUpBackgroundImageViewConstraint()
         setUpTodayWeatherViewConstraint()
-        setUpHourlyWeatherViewConstraint()
-        setUpWeeklyWeatherViewConstraint()
+        setUpDayOfWeekViewConstraint()
+//        setUpHourlyWeatherViewConstraint()
+//        setUpWeeklyWeatherViewConstraint()
     }
 }
 
@@ -114,7 +115,7 @@ extension WeatherView {
     private func setUpDayOfWeekViewConstraint() {
         NSLayoutConstraint.activate([
             dayOfWeekView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            dayOfWeekView.topAnchor.constraint(equalTo: todayWeatherView.bottomAnchor, constant: 20)
+            dayOfWeekView.topAnchor.constraint(equalTo: todayWeatherView.bottomAnchor),
         ])
     }
     

@@ -60,11 +60,9 @@ final class DayOfWeekView: UIView {
     private func setUpContraints() {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            stackView.trailingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
         ])
-        
-        dayLabel.setContentHuggingPriority(.init(1), for: .horizontal)
     }
 }
