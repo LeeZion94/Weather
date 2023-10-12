@@ -72,7 +72,7 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell, ReuseIdentifi
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             
             weatherImageView.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 1.0),
             weatherImageView.heightAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 1.0)

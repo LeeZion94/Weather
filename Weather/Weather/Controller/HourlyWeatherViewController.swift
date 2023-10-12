@@ -18,7 +18,8 @@ final class HourlyWeatherViewController: UIViewController {
         let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(50), heightDimension: .fractionalHeight(1.0))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        
+
+        section.orthogonalScrollingBehavior = .continuous
         return .init(section: section)
     }()
     

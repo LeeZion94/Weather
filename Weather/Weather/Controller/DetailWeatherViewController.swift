@@ -16,6 +16,9 @@ final class DetailWeatherViewController: UIViewController {
     private let tableView: UITableView = {
         let tableView = UITableView()
         
+        tableView.backgroundColor = .clear
+        tableView.allowsSelection = false
+        tableView.showsVerticalScrollIndicator = false
         tableView.register(WeeklyWeatherTableViewCell.self, forCellReuseIdentifier: WeeklyWeatherTableViewCell.id)
         tableView.register(DetailWeatherTableViewCell.self, forCellReuseIdentifier: DetailWeatherTableViewCell.id)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -24,15 +27,13 @@ final class DetailWeatherViewController: UIViewController {
     
     private var diffableDataSource: UITableViewDiffableDataSource<Section, AnyHashable>?
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nil, bundle: nil)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         configureUI()
         setUpConstraints()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        setUpDiffableDataSource()
+        setUpDiffabelDataSourceSnapShot()
     }
     
     private func configureUI() {
@@ -62,10 +63,12 @@ extension DetailWeatherViewController {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: WeeklyWeatherTableViewCell.id, for: indexPath) as? WeeklyWeatherTableViewCell else { return UITableViewCell() }
                 
                 cell.setUpContents(weeklyWeatherDTO: weeklyWeatherDTO)
+                return cell
             } else if let detailWeatherDTO = item as? DetailWeatherDTO {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailWeatherTableViewCell.id, for: indexPath) as? DetailWeatherTableViewCell else { return UITableViewCell() }
                 
                 cell.setUpContents(detailWeatherDTO: detailWeatherDTO)
+                return cell
             }
             
             return UITableViewCell()
@@ -77,8 +80,8 @@ extension DetailWeatherViewController {
         var snapShot = NSDiffableDataSourceSnapshot<Section, AnyHashable>()
         
         snapShot.appendSections([.weekly, .detail])
-        snapShot.appendItems([], toSection: .weekly) // TODO: Required Data
-        snapShot.appendItems([], toSection: .detail)
+        snapShot.appendItems(weeklyWeatherDTOList, toSection: .weekly) // TODO: Required Data
+        snapShot.appendItems(detailWeatherDTOList, toSection: .detail)
         diffableDataSource?.apply(snapShot)
     }
 }

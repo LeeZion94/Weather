@@ -74,6 +74,7 @@ final class DetailWeatherTableViewCell: UITableViewCell, ReuseIdentifiable {
         
         configureUI()
         setUpConstraints()
+        setUpCell()
     }
     
     required init?(coder: NSCoder) {
@@ -105,13 +106,17 @@ final class DetailWeatherTableViewCell: UITableViewCell, ReuseIdentifiable {
     
     private func setUpConstraints() {
         NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
+            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         
         leftValueLabel.setContentHuggingPriority(.init(1), for: .vertical)
         rightValueLabel.setContentHuggingPriority(.init(1), for: .vertical)
+    }
+    
+    private func setUpCell() {
+        backgroundColor = .clear
     }
 }

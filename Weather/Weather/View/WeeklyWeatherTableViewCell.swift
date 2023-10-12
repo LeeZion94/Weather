@@ -64,6 +64,7 @@ final class WeeklyWeatherTableViewCell: UITableViewCell, ReuseIdentifiable {
         
         configureUI()
         setUpConstraints()
+        setUpCell()
     }
     
     required init?(coder: NSCoder) {
@@ -91,12 +92,16 @@ final class WeeklyWeatherTableViewCell: UITableViewCell, ReuseIdentifiable {
     
     private func setUpConstraints() {
         NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
+            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         
-        temperatureStackView.setContentHuggingPriority(.init(1), for: .horizontal)
+        dayLabel.setContentHuggingPriority(.init(1), for: .horizontal)
+    }
+    
+    private func setUpCell() {
+        backgroundColor = .clear
     }
 }
