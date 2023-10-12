@@ -20,24 +20,27 @@ final class TodayWeatherView: UIView {
     private let cityNameLabel: UILabel = {
         let label = UILabel()
         
-        label.font = .systemFont(ofSize: 20)
+        label.font = .systemFont(ofSize: 35)
         label.textColor = .white
+        label.textAlignment = .center
         return label
     }()
     
     private let weatherDescriptionLabel: UILabel = {
         let label = UILabel()
         
-        label.font = .systemFont(ofSize: 15)
+        label.font = .systemFont(ofSize: 22)
         label.textColor = .white
+        label.textAlignment = .center
         return label
     }()
     
     private let temperatureLabel: UILabel = {
         let label = UILabel()
         
-        label.font = .boldSystemFont(ofSize: 25)
+        label.font = .boldSystemFont(ofSize: 40)
         label.textColor = .white
+        label.textAlignment = .center
         return label
     }()
     
@@ -70,7 +73,7 @@ final class TodayWeatherView: UIView {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
         ])
         
