@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct DetailWeatherDTO: Hashable {
+struct DetailWeatherDTO: Hashable, Identifiable {
+    let id = UUID()
     let leftTitle: String
     let leftValue: String
     let rightTitle: String

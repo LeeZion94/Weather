@@ -5,7 +5,10 @@
 //  Created by Hyungmin Lee on 2023/10/11.
 //
 
-struct WeeklyWeatherDTO: Hashable {
+import Foundation
+
+struct WeeklyWeatherDTO: Hashable, Identifiable {
+    let id = UUID()
     let day: String
     let imageName: String
     let maxTemperature: String
