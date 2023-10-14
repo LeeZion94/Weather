@@ -33,6 +33,6 @@ final class WeatherRepository: WeatherRepositoryType {
             case .failure(let error):
                 return .failure(error)
             }
-        }.asObservable()
+        }
     }
 }
