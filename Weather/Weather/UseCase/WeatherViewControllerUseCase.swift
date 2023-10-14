@@ -8,13 +8,22 @@
 import Foundation
 
 protocol WeatherViewControllerUseCaseType {
-    
+    func convertTodayWeatherDTO(forecaseResult: ForecastResult) -> TodayWeatherDTO?
 }
 
 final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
-    private let forecaseResult: ForecastResult
+    private let dateConverter: DateConverterType
     
-    init(forecaseResult: ForecastResult) {
-        self.forecaseResult = forecaseResult
+    init(dateConverter: DateConverterType) {
+        self.dateConverter = dateConverter
+    }
+    
+    func convertTodayWeatherDTO(forecaseResult: ForecastResult) -> TodayWeatherDTO? {
+        guard let todayListItem = forecaseResult.list.first else { return nil }
+        let todayWeather = todayListItem.weather
+
+        return TodayWeatherDTO(cityName: forecaseResult.city.name,
+                               weatherDescription: todayWeather.first?.description ?? "",
+                               temperature: "\(todayListItem.main.temp)°C")
     }
 }

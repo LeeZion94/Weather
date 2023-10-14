@@ -62,13 +62,8 @@ extension WeatherViewController {
         let output = viewModel.transform(input: input)
         
         output.forecastResult.bind { forecastResult in
-//            print(forecastResult!)
+            print(forecastResult)
             DispatchQueue.main.async {
-                let todayWeatherDTO = TodayWeatherDTO(cityName: "London",
-                                                      weatherDescription: "clear sky",
-                                                      temperature: "15C")
-                self.weatherView.setUpTodayWeatherViewContents(todayWeatherDTO: todayWeatherDTO)
-                
                 self.weatherView.setUpDayOfWeekView(day: "수요일")
                 
                 let hourlyWeatherDTOList: [HourlyWeatherDTO] = [.init(hour: "3오전", imageName: "testImage", temperature: "15C"),
@@ -100,6 +95,10 @@ extension WeatherViewController {
                                                                 .init(leftTitle: "wind", leftValue: "ESE 299 m/s", rightTitle: "clouds", rightValue: "1 %"),]
                 self.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList, detailWeatherDTOList: detailWeatherDTOList)
             }
+        }.disposed(by: disposeBag)
+        
+        output.todayWeather.bind { todayWeatherDTO in
+            self.weatherView.setUpTodayWeatherViewContents(todayWeatherDTO: todayWeatherDTO)
         }.disposed(by: disposeBag)
     }
 }

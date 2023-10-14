@@ -16,18 +16,22 @@ final class WeatherViewModel {
     }
 
     struct Output {
-        let forecastResult: Observable<ForecastResult?>
+        let forecastResult: Observable<ForecastResult>
+        let todayWeather: Observable<TodayWeatherDTO>
     }
     
     private let weatherRepository: WeatherRepositoryType
+    private let weatherViewControllerUseCase: WeatherViewControllerUseCaseType
     
-    init(weatherRepository: WeatherRepositoryType) {
+    init(weatherRepository: WeatherRepositoryType,
+         weatherViewControllerUseCase: WeatherViewControllerUseCaseType) {
         self.weatherRepository = weatherRepository
+        self.weatherViewControllerUseCase = weatherViewControllerUseCase
     }
     
     func transform(input: Input) -> Output {
-        let forecastResult: Observable<ForecastResult?> = input.weatherTrigger.flatMap { cityName in
-            return self.weatherRepository.fetchWeatherData(cityName: cityName).map { result in
+        let forecastResult: Observable<ForecastResult> = input.weatherTrigger.flatMap { cityName in
+            return self.weatherRepository.fetchWeatherData(cityName: cityName).compactMap { result in
                 switch result {
                 case .success(let forecastResult):
                     return forecastResult
@@ -37,6 +41,11 @@ final class WeatherViewModel {
             }
         }.share()
         
-        return Output(forecastResult: forecastResult)
+        let todayWeather: Observable<TodayWeatherDTO> = forecastResult.compactMap { forecastResult in
+            return self.weatherViewControllerUseCase.convertTodayWeatherDTO(forecaseResult: forecastResult)
+        }
+        
+        return Output(forecastResult: forecastResult,
+                      todayWeather: todayWeather)
     }
 }

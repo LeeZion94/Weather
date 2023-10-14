@@ -45,6 +45,7 @@ struct EndPoint {
             switch self {
             case .weather(let cityName):
                 queryItems.append(.init(name: "q", value: cityName))
+                queryItems.append(.init(name: "units", value: "metric"))
             case .icon:
                 break
             }
