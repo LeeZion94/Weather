@@ -58,17 +58,15 @@ extension DetailWeatherViewController {
     }
     
     private func setUpDiffableDataSource() {
-        diffableDataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+        diffableDataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+            guard let self else { return UITableViewCell() }
+            
             if let weeklyWeatherDTO = item as? WeeklyWeatherDTO {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: WeeklyWeatherTableViewCell.id, for: indexPath) as? WeeklyWeatherTableViewCell else { return UITableViewCell() }
-                
-                cell.setUpContents(weeklyWeatherDTO: weeklyWeatherDTO)
-                return cell
+                return self.weeklyWeatherTableViewCell(weeklyWeatherDTO: weeklyWeatherDTO,
+                                                  indexPath: indexPath)
             } else if let detailWeatherDTO = item as? DetailWeatherDTO {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailWeatherTableViewCell.id, for: indexPath) as? DetailWeatherTableViewCell else { return UITableViewCell() }
-                
-                cell.setUpContents(detailWeatherDTO: detailWeatherDTO)
-                return cell
+                return self.detailWeatherTableViewCell(detailWeatherDTO: detailWeatherDTO,
+                                                       indexPath: indexPath)
             }
             
             return UITableViewCell()
@@ -83,5 +81,24 @@ extension DetailWeatherViewController {
         snapShot.appendItems(weeklyWeatherDTOList, toSection: .weekly) // TODO: Required Data
         snapShot.appendItems(detailWeatherDTOList, toSection: .detail)
         diffableDataSource?.apply(snapShot)
+    }
+}
+
+// MARK: - Cell
+extension DetailWeatherViewController {
+    private func weeklyWeatherTableViewCell(weeklyWeatherDTO: WeeklyWeatherDTO,
+                                            indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WeeklyWeatherTableViewCell.id, for: indexPath) as? WeeklyWeatherTableViewCell else { return UITableViewCell() }
+        
+        cell.setUpContents(weeklyWeatherDTO: weeklyWeatherDTO)
+        return cell
+    }
+
+    private func detailWeatherTableViewCell(detailWeatherDTO: DetailWeatherDTO,
+                                            indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailWeatherTableViewCell.id, for: indexPath) as? DetailWeatherTableViewCell else { return UITableViewCell() }
+        
+        cell.setUpContents(detailWeatherDTO: detailWeatherDTO)
+        return cell
     }
 }
