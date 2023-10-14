@@ -20,6 +20,7 @@ final class WeatherViewModel {
         let todayWeather: Observable<TodayWeatherDTO>
         let dayOfWeek: Observable<String>
         let hourlyWeather: Observable<[HourlyWeatherDTO]>
+        let weeklyWeatehr: Observable<[WeeklyWeatherDTO]>
     }
     
     private let weatherRepository: WeatherRepositoryType
@@ -55,9 +56,14 @@ final class WeatherViewModel {
             return self.weatherViewControllerUseCase.convertHourlyWeatherDTOList(forecastResult: forecastResult)
         }
         
+        let weeklyWeather: Observable<[WeeklyWeatherDTO]> = forecastResult.map { forecastResult in
+            return self.weatherViewControllerUseCase.convertWeeklyWeatherDTOList(forecastResult: forecastResult)
+        }
+        
         return Output(forecastResult: forecastResult,
                       todayWeather: todayWeather,
                       dayOfWeek: dayOfWeek,
-                      hourlyWeather: hourlyWeather)
+                      hourlyWeather: hourlyWeather,
+                      weeklyWeatehr: weeklyWeather)
     }
 }

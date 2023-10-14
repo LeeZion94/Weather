@@ -61,21 +61,15 @@ extension WeatherViewController {
         let input = WeatherViewModel.Input(weatherTrigger: weatherTrigger.asObservable())
         let output = viewModel.transform(input: input)
         
-        output.forecastResult.bind { forecastResult in
-            print(forecastResult)
-            DispatchQueue.main.async {
-                let weeklyWeatherDTOList: [WeeklyWeatherDTO] = [.init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),
-                                                                .init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),
-                                                                .init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),
-                                                                .init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),
-                                                                .init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),
-                                                                .init(day: "수요일", imageName: "testImage", maxTemperature: "27C", minTemperature: "15C"),]
-                let detailWeatherDTOList: [DetailWeatherDTO] = [.init(leftTitle: "humidity", leftValue: "84%", rightTitle: "pressure", rightValue: "1010 hPa"),
-                                                                .init(leftTitle: "sea level pressure", leftValue: "1010 hPa", rightTitle: "ground level pressure", rightValue: "1009 hPa"),
-                                                                .init(leftTitle: "wind", leftValue: "ESE 299 m/s", rightTitle: "clouds", rightValue: "1 %"),]
-                self.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList, detailWeatherDTOList: detailWeatherDTOList)
-            }
-        }.disposed(by: disposeBag)
+//        output.forecastResult.bind { forecastResult in
+//            print(forecastResult)
+//            DispatchQueue.main.async {
+//                let detailWeatherDTOList: [DetailWeatherDTO] = [.init(leftTitle: "humidity", leftValue: "84%", rightTitle: "pressure", rightValue: "1010 hPa"),
+//                                                                .init(leftTitle: "sea level pressure", leftValue: "1010 hPa", rightTitle: "ground level pressure", rightValue: "1009 hPa"),
+//                                                                .init(leftTitle: "wind", leftValue: "ESE 299 m/s", rightTitle: "clouds", rightValue: "1 %"),]
+//                self.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList, detailWeatherDTOList: detailWeatherDTOList)
+//            }
+//        }.disposed(by: disposeBag)
         
         output.todayWeather.bind { todayWeatherDTO in
             self.weatherView.setUpTodayWeatherViewContents(todayWeatherDTO: todayWeatherDTO)
@@ -87,6 +81,10 @@ extension WeatherViewController {
         
         output.hourlyWeather.bind { hourlyWeatherDTOList in
             self.weatherView.setUpHourlyWeatherViewContents(hourlyWeatherDTOList: hourlyWeatherDTOList)
+        }.disposed(by: disposeBag)
+        
+        output.weeklyWeatehr.bind { weeklyWeatherDTOList in
+            print(weeklyWeatherDTOList)
         }.disposed(by: disposeBag)
     }
 }

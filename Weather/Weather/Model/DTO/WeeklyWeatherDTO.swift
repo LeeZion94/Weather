@@ -13,4 +13,5 @@ struct WeeklyWeatherDTO: Hashable, Identifiable {
     let imageName: String
     let maxTemperature: String
     let minTemperature: String
+    let date: Date
 }

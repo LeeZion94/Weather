@@ -11,6 +11,7 @@ protocol WeatherViewControllerUseCaseType {
     func convertTodayWeatherDTO(forecastResult: ForecastResult) -> TodayWeatherDTO?
     func convertDayOfWeekString(forecastResult: ForecastResult) -> String?
     func convertHourlyWeatherDTOList(forecastResult: ForecastResult) -> [HourlyWeatherDTO]
+    func convertWeeklyWeatherDTOList(forecastResult: ForecastResult) -> [WeeklyWeatherDTO]
 }
 
 final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
@@ -48,5 +49,50 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
                                     imageName: $0.weather.first?.icon ?? "",
                                     temperature: "\($0.main.temp)")
         }
+    }
+    
+    func convertWeeklyWeatherDTOList(forecastResult: ForecastResult) -> [WeeklyWeatherDTO] {
+        var minTemperatureList = [String: Double]()
+        var maxTemperatureList = [String: Double]()
+        var dateList = [String: Date]()
+        var iconList = [String: String]()
+        
+        for forecast in forecastResult.list {
+            let day = dateConverter.convertDayOfWeekFromLocalDate(timezone: forecastResult.city.timezone,
+                                                                  date: forecast.dt_txt)
+            
+            minTemperatureList.merge([day: forecast.main.temp_min]) { oldValue, newValue in
+                return oldValue > newValue ? newValue : oldValue
+            }
+            
+            maxTemperatureList.merge([day: forecast.main.temp_max]) { oldValue, newValue in
+                return oldValue > newValue ? oldValue : newValue
+            }
+            
+            dateList.merge([day: dateConverter.convertLocalDateFromUTC(timezone: forecastResult.city.timezone,
+                                                                       string: forecast.dt_txt)]) { oldValue, newValue in
+                return oldValue
+            }
+            
+            iconList.merge([day: forecast.weather.first?.icon ?? ""]) { oldValue, newValue in
+                return oldValue
+            }
+        }
+        
+        var weelyWeatherDTOList = [WeeklyWeatherDTO]()
+        
+        for day in minTemperatureList.keys {
+            let weeklyWeatherDTO = WeeklyWeatherDTO(day: day,
+                                                    imageName: iconList[day] ?? "",
+                                                    maxTemperature: "\(maxTemperatureList[day] ?? 0)",
+                                                    minTemperature: "\(minTemperatureList[day] ?? 0)",
+                                                    date: dateList[day] ?? Date())
+            
+            weelyWeatherDTOList.append(weeklyWeatherDTO)
+        }
+        
+        return weelyWeatherDTOList.sorted(by: { (first, second) in
+            return first.date < second.date
+        })
     }
 }
