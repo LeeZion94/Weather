@@ -28,14 +28,11 @@ struct EndPoint {
     
     enum URLInformation {
         case weather(cityName: String)
-        case icon(iconName: String)
         
         var path: String {
             switch self {
             case .weather:
                 return "/data/2.5/forecast"
-            case .icon(let name):
-                return "/img/w/\(name)"
             }
         }
         
@@ -46,8 +43,6 @@ struct EndPoint {
             case .weather(let cityName):
                 queryItems.append(.init(name: "q", value: cityName))
                 queryItems.append(.init(name: "units", value: "metric"))
-            case .icon:
-                break
             }
             
             return queryItems
