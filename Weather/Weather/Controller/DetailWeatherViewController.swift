@@ -78,7 +78,7 @@ extension DetailWeatherViewController {
         var snapShot = NSDiffableDataSourceSnapshot<Section, AnyHashable>()
         
         snapShot.appendSections([.weekly, .detail])
-        snapShot.appendItems(weeklyWeatherDTOList, toSection: .weekly) // TODO: Required Data
+        snapShot.appendItems(weeklyWeatherDTOList, toSection: .weekly)
         snapShot.appendItems(detailWeatherDTOList, toSection: .detail)
         diffableDataSource?.apply(snapShot)
     }
