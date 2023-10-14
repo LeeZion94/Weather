@@ -60,6 +60,8 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
         for forecast in forecastResult.list {
             let day = dateConverter.convertDayOfWeekFromLocalDate(timezone: forecastResult.city.timezone,
                                                                   date: forecast.dt_txt)
+            let date = dateConverter.convertLocalDateFromUTC(timezone: forecastResult.city.timezone,
+                                                             string: forecast.dt_txt)
             
             minTemperatureList.merge([day: forecast.main.temp_min]) { oldValue, newValue in
                 return oldValue > newValue ? newValue : oldValue
@@ -69,8 +71,7 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
                 return oldValue > newValue ? oldValue : newValue
             }
             
-            dateList.merge([day: dateConverter.convertLocalDateFromUTC(timezone: forecastResult.city.timezone,
-                                                                       string: forecast.dt_txt)]) { oldValue, newValue in
+            dateList.merge([day: date]) { oldValue, newValue in
                 return oldValue
             }
             
@@ -79,6 +80,19 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
             }
         }
         
+        return weeklyWeatherDTOList(minTemperatureList: minTemperatureList,
+                                    maxTemperatureList: maxTemperatureList,
+                                    dateList: dateList,
+                                    iconList: iconList)
+    }
+}
+
+// MARK: - Private
+extension WeatherViewControllerUseCase {
+    private func weeklyWeatherDTOList(minTemperatureList: [String: Double],
+                                      maxTemperatureList: [String: Double],
+                                      dateList: [String: Date],
+                                      iconList: [String: String]) -> [WeeklyWeatherDTO] {
         var weelyWeatherDTOList = [WeeklyWeatherDTO]()
         
         for day in minTemperatureList.keys {
