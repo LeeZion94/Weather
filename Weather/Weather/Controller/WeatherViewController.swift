@@ -34,22 +34,12 @@ final class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureUI()
-        setUpConstratins()
         setUpController()
         bind()
         
         weatherTrigger.onNext(cityName)
     }
-    
-    private func configureUI() {
-        
-    }
-    
-    private func setUpConstratins() {
-        
-    }
-    
+
     private func setUpController() {
         view.backgroundColor = .systemBackground
     }
@@ -61,19 +51,32 @@ extension WeatherViewController {
         let input = WeatherViewModel.Input(weatherTrigger: weatherTrigger.asObservable())
         let output = viewModel.transform(input: input)
         
-        output.todayWeather.bind { todayWeatherDTO in
+        bindTodayWeather(todayWeather: output.todayWeather)
+        bindDayOfWeek(dayOfWeek: output.dayOfWeek)
+        bindHourlyWeather(hourlyWeather: output.hourlyWeather)
+        bindWeeklyWeather(weeklyWeather: output.weeklyWeatehr)
+    }
+    
+    private func bindTodayWeather(todayWeather: Observable<TodayWeatherDTO>) {
+        todayWeather.bind { todayWeatherDTO in
             self.weatherView.setUpTodayWeatherViewContents(todayWeatherDTO: todayWeatherDTO)
         }.disposed(by: disposeBag)
-        
-        output.dayOfWeek.bind { dayOfWeek in
+    }
+    
+    private func bindDayOfWeek(dayOfWeek: Observable<String>) {
+        dayOfWeek.bind { dayOfWeek in
             self.weatherView.setUpDayOfWeekView(day: dayOfWeek)
         }.disposed(by: disposeBag)
-        
-        output.hourlyWeather.bind { hourlyWeatherDTOList in
+    }
+    
+    private func bindHourlyWeather(hourlyWeather: Observable<[HourlyWeatherDTO]>) {
+        hourlyWeather.bind { hourlyWeatherDTOList in
             self.weatherView.setUpHourlyWeatherViewContents(hourlyWeatherDTOList: hourlyWeatherDTOList)
         }.disposed(by: disposeBag)
-        
-        output.weeklyWeatehr.bind { (weeklyWeatherDTOList, detailWeatherDTOList) in
+    }
+    
+    private func bindWeeklyWeather(weeklyWeather: Observable<([WeeklyWeatherDTO], [DetailWeatherDTO])>) {
+        weeklyWeather.bind { (weeklyWeatherDTOList, detailWeatherDTOList) in
             self.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList,
                                                             detailWeatherDTOList: detailWeatherDTOList)
         }.disposed(by: disposeBag)
