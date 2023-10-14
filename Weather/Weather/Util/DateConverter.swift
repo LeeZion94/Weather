@@ -9,6 +9,7 @@ import Foundation
 
 protocol DateConverterType {
     func convertDayOfWeekFromLocalDate(timezone: Int, date: String) -> String
+    func convertHourFromLocalDate(timezone: Int, date: String) -> String
 }
 
 final class DateConverter: DateConverterType {
@@ -20,15 +21,23 @@ final class DateConverter: DateConverterType {
         return dateFormatter.string(from: date)
     }
     
-    func convertLocalDateFromUTC(timezone: Int, string: String) -> Date {
-        let utcDate = convertUTCDate(from: string)
+    func convertHourFromLocalDate(timezone: Int, date: String) -> String {
+        let date = convertLocalDateFromUTC(timezone: timezone, string: date)
+        let dateFormatter = DateFormatter()
         
-        return utcDate.addingTimeInterval(Double(timezone))
+        dateFormatter.dateFormat = "ha"
+        return dateFormatter.string(from: date)
     }
 }
 
 // MARK: - Private
 extension DateConverter {
+    private func convertLocalDateFromUTC(timezone: Int, string: String) -> Date {
+        let utcDate = convertUTCDate(from: string)
+        
+        return utcDate.addingTimeInterval(Double(timezone))
+    }
+    
     private func convertUTCDate(from string: String) -> Date {
         let formatter = DateFormatter()
         

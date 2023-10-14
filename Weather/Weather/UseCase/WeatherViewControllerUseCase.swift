@@ -10,6 +10,7 @@ import Foundation
 protocol WeatherViewControllerUseCaseType {
     func convertTodayWeatherDTO(forecastResult: ForecastResult) -> TodayWeatherDTO?
     func convertDayOfWeekString(forecastResult: ForecastResult) -> String?
+    func convertHourlyWeatherDTOList(forecastResult: ForecastResult) -> [HourlyWeatherDTO]
 }
 
 final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
@@ -30,9 +31,22 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
     
     func convertDayOfWeekString(forecastResult: ForecastResult) -> String? {
         guard let todayListItem = forecastResult.list.first else { return nil }
-        let dayString = dateConverter.convertDayOfWeekFromLocalDate(timezone: forecastResult.city.timezone,
+        let convertedDay = dateConverter.convertDayOfWeekFromLocalDate(timezone: forecastResult.city.timezone,
                                                                     date: todayListItem.dt_txt)
         
-        return dayString
+        return convertedDay
+    }
+    
+    func convertHourlyWeatherDTOList(forecastResult: ForecastResult) -> [HourlyWeatherDTO] {
+        let weatherLsit = forecastResult.list
+        
+        return weatherLsit.map {
+            let convertedHour = dateConverter.convertHourFromLocalDate(timezone: forecastResult.city.timezone,
+                                                                       date: $0.dt_txt)
+            
+            return HourlyWeatherDTO(hour: convertedHour,
+                                    imageName: $0.weather.first?.icon ?? "",
+                                    temperature: "\($0.main.temp)")
+        }
     }
 }
