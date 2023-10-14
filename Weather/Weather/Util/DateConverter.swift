@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DateConverterType {
-
+    func convertDayOfWeekFromLocalDate(timezone: Int, date: String) -> String
 }
 
 final class DateConverter: DateConverterType {

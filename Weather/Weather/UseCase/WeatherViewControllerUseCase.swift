@@ -8,7 +8,8 @@
 import Foundation
 
 protocol WeatherViewControllerUseCaseType {
-    func convertTodayWeatherDTO(forecaseResult: ForecastResult) -> TodayWeatherDTO?
+    func convertTodayWeatherDTO(forecastResult: ForecastResult) -> TodayWeatherDTO?
+    func convertDayOfWeekString(forecastResult: ForecastResult) -> String?
 }
 
 final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
@@ -18,12 +19,20 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
         self.dateConverter = dateConverter
     }
     
-    func convertTodayWeatherDTO(forecaseResult: ForecastResult) -> TodayWeatherDTO? {
-        guard let todayListItem = forecaseResult.list.first else { return nil }
+    func convertTodayWeatherDTO(forecastResult: ForecastResult) -> TodayWeatherDTO? {
+        guard let todayListItem = forecastResult.list.first else { return nil }
         let todayWeather = todayListItem.weather
 
-        return TodayWeatherDTO(cityName: forecaseResult.city.name,
+        return TodayWeatherDTO(cityName: forecastResult.city.name,
                                weatherDescription: todayWeather.first?.description ?? "",
                                temperature: "\(todayListItem.main.temp)°C")
+    }
+    
+    func convertDayOfWeekString(forecastResult: ForecastResult) -> String? {
+        guard let todayListItem = forecastResult.list.first else { return nil }
+        let dayString = dateConverter.convertDayOfWeekFromLocalDate(timezone: forecastResult.city.timezone,
+                                                                    date: todayListItem.dt_txt)
+        
+        return dayString
     }
 }

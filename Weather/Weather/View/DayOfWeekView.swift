@@ -46,7 +46,9 @@ final class DayOfWeekView: UIView {
     }
     
     func setUpContents(day: String) {
-        dayLabel.text = day
+        DispatchQueue.main.async {
+            self.dayLabel.text = day
+        }
     }
     
     private func configureUI() {

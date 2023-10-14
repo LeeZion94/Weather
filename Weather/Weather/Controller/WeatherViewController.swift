@@ -64,8 +64,6 @@ extension WeatherViewController {
         output.forecastResult.bind { forecastResult in
             print(forecastResult)
             DispatchQueue.main.async {
-                self.weatherView.setUpDayOfWeekView(day: "수요일")
-                
                 let hourlyWeatherDTOList: [HourlyWeatherDTO] = [.init(hour: "3오전", imageName: "testImage", temperature: "15C"),
                                                                 .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
                                                                 .init(hour: "3오전", imageName: "testImage", temperature: "15C"),
@@ -99,6 +97,10 @@ extension WeatherViewController {
         
         output.todayWeather.bind { todayWeatherDTO in
             self.weatherView.setUpTodayWeatherViewContents(todayWeatherDTO: todayWeatherDTO)
+        }.disposed(by: disposeBag)
+        
+        output.dayOfWeek.bind { dayOfWeek in
+            self.weatherView.setUpDayOfWeekView(day: dayOfWeek)
         }.disposed(by: disposeBag)
     }
 }

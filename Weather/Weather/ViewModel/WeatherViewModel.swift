@@ -18,6 +18,7 @@ final class WeatherViewModel {
     struct Output {
         let forecastResult: Observable<ForecastResult>
         let todayWeather: Observable<TodayWeatherDTO>
+        let dayOfWeek: Observable<String>
     }
     
     private let weatherRepository: WeatherRepositoryType
@@ -42,10 +43,15 @@ final class WeatherViewModel {
         }.share()
         
         let todayWeather: Observable<TodayWeatherDTO> = forecastResult.compactMap { forecastResult in
-            return self.weatherViewControllerUseCase.convertTodayWeatherDTO(forecaseResult: forecastResult)
+            return self.weatherViewControllerUseCase.convertTodayWeatherDTO(forecastResult: forecastResult)
+        }
+        
+        let dayOfWeek: Observable<String> = forecastResult.compactMap { forecastResult in
+            return self.weatherViewControllerUseCase.convertDayOfWeekString(forecastResult: forecastResult)
         }
         
         return Output(forecastResult: forecastResult,
-                      todayWeather: todayWeather)
+                      todayWeather: todayWeather,
+                      dayOfWeek: dayOfWeek)
     }
 }
