@@ -83,8 +83,9 @@ extension WeatherViewController {
             self.weatherView.setUpHourlyWeatherViewContents(hourlyWeatherDTOList: hourlyWeatherDTOList)
         }.disposed(by: disposeBag)
         
-        output.weeklyWeatehr.bind { weeklyWeatherDTOList in
-            print(weeklyWeatherDTOList)
+        output.weeklyWeatehr.bind { (weeklyWeatherDTOList, detailWeatherDTOList) in
+            self.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList,
+                                                            detailWeatherDTOList: detailWeatherDTOList)
         }.disposed(by: disposeBag)
     }
 }

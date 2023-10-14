@@ -12,6 +12,7 @@ protocol WeatherViewControllerUseCaseType {
     func convertDayOfWeekString(forecastResult: ForecastResult) -> String?
     func convertHourlyWeatherDTOList(forecastResult: ForecastResult) -> [HourlyWeatherDTO]
     func convertWeeklyWeatherDTOList(forecastResult: ForecastResult) -> [WeeklyWeatherDTO]
+    func convertDetailWeatherDTOList(forecastResult: ForecastResult) -> [DetailWeatherDTO]?
 }
 
 final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
@@ -84,6 +85,27 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
                                     maxTemperatureList: maxTemperatureList,
                                     dateList: dateList,
                                     iconList: iconList)
+    }
+    
+    func convertDetailWeatherDTOList(forecastResult: ForecastResult) -> [DetailWeatherDTO]? {
+        guard let detailWeather = forecastResult.list.first?.main else { return nil }
+        
+        let firstSection = DetailWeatherDTO(leftTitle: "humidity",
+                                            leftValue: "\(detailWeather.humidity)",
+                                            rightTitle: "pressure",
+                                            rightValue: "\(detailWeather.pressure)")
+        
+        let secondSection = DetailWeatherDTO(leftTitle: "sea level pressure",
+                                            leftValue: "\(detailWeather.sea_level)",
+                                            rightTitle: "groud level pressure",
+                                            rightValue: "\(detailWeather.grnd_level)")
+        
+        let thirdSection = DetailWeatherDTO(leftTitle: "wind",
+                                            leftValue: "\(forecastResult.list.first?.wind.speed ?? 0)",
+                                            rightTitle: "clouds",
+                                            rightValue: "\(forecastResult.list.first?.clouds.all ?? 0)")
+        
+        return [firstSection, secondSection, thirdSection]
     }
 }
 
