@@ -91,19 +91,19 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
         guard let detailWeather = forecastResult.list.first?.main else { return nil }
         
         let firstSection = DetailWeatherDTO(leftTitle: "humidity",
-                                            leftValue: "\(detailWeather.humidity)",
+                                            leftValue: "\(detailWeather.humidity) %",
                                             rightTitle: "pressure",
-                                            rightValue: "\(detailWeather.pressure)")
+                                            rightValue: "\(detailWeather.pressure) hPa")
         
         let secondSection = DetailWeatherDTO(leftTitle: "sea level pressure",
-                                            leftValue: "\(detailWeather.sea_level)",
+                                            leftValue: "\(detailWeather.sea_level) hPa",
                                             rightTitle: "groud level pressure",
-                                            rightValue: "\(detailWeather.grnd_level)")
+                                            rightValue: "\(detailWeather.grnd_level) hPa")
         
         let thirdSection = DetailWeatherDTO(leftTitle: "wind",
-                                            leftValue: "\(forecastResult.list.first?.wind.speed ?? 0)",
+                                            leftValue: "WNW \(forecastResult.list.first?.wind.deg ?? 0) m/s",
                                             rightTitle: "clouds",
-                                            rightValue: "\(forecastResult.list.first?.clouds.all ?? 0)")
+                                            rightValue: "\(forecastResult.list.first?.clouds.all ?? 0) %")
         
         return [firstSection, secondSection, thirdSection]
     }
