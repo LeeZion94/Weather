@@ -19,9 +19,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let viewModel: WeatherViewModel = WeatherViewModel(weatherRepository: weatherRepository,
                                                            weatherViewControllerUseCase: weatherViewControllerUseCase)
         let weatherViewController = WeatherViewController(viewModel: viewModel, cityName: "seoul")
+        let pageController = PageViewController(viewControllerList: [weatherViewController])
         
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = weatherViewController
+        window?.rootViewController = pageController
         window?.makeKeyAndVisible()
     }
 

@@ -41,7 +41,7 @@ final class WeatherViewController: UIViewController {
     }
 
     private func setUpController() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .clear
     }
 }
 

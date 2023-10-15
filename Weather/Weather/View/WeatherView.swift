@@ -8,13 +8,6 @@
 import UIKit
 
 final class WeatherView: UIView {
-    private let backgroundImageView: UIImageView = {
-        let imageView = UIImageView(image: .init(named: "background"))
-        
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
     private let todayWeatherView: TodayWeatherView = {
         let todayWeatherView = TodayWeatherView()
         
@@ -55,14 +48,13 @@ final class WeatherView: UIView {
     }
     
     private func configureUI() {
-        [backgroundImageView, todayWeatherView,
-         dayOfWeekView, hourlyWeatherViewController.view, detailWeatherViewController.view].forEach {
+        [todayWeatherView, dayOfWeekView,
+         hourlyWeatherViewController.view, detailWeatherViewController.view].forEach {
             addSubview($0)
         }
     }
     
     private func setUpConstraints() {
-        setUpBackgroundImageViewConstraint()
         setUpTodayWeatherViewConstraint()
         setUpDayOfWeekViewConstraint()
         setUpHourlyWeatherViewConstraint()
@@ -94,16 +86,7 @@ extension WeatherView {
 
 
 // MARK: - Constraints
-extension WeatherView {
-    private func setUpBackgroundImageViewConstraint() {
-        NSLayoutConstraint.activate([
-            backgroundImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            backgroundImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            backgroundImageView.topAnchor.constraint(equalTo: topAnchor),
-            backgroundImageView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-    }
-    
+extension WeatherView {    
     private func setUpTodayWeatherViewConstraint() {
         NSLayoutConstraint.activate([
             todayWeatherView.leadingAnchor.constraint(equalTo: leadingAnchor),
