@@ -25,10 +25,10 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
     func convertTodayWeatherDTO(forecastResult: ForecastResult) -> TodayWeatherDTO? {
         guard let todayListItem = forecastResult.list.first else { return nil }
         let todayWeather = todayListItem.weather
-
+//        let result = myDouble.rounded(.towardZero) // 3
         return TodayWeatherDTO(cityName: forecastResult.city.name,
                                weatherDescription: todayWeather.first?.description ?? "",
-                               temperature: "\(todayListItem.main.temp)°C")
+                               temperature: "\(Int(todayListItem.main.temp))°C")
     }
     
     func convertDayOfWeekString(forecastResult: ForecastResult) -> String? {
@@ -48,7 +48,7 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
             
             return HourlyWeatherDTO(hour: convertedHour,
                                     imageName: $0.weather.first?.icon ?? "",
-                                    temperature: "\($0.main.temp)")
+                                    temperature: "\(Int($0.main.temp))°C")
         }
     }
     
@@ -120,8 +120,8 @@ extension WeatherViewControllerUseCase {
         for day in minTemperatureList.keys {
             let weeklyWeatherDTO = WeeklyWeatherDTO(day: day,
                                                     imageName: iconList[day] ?? "",
-                                                    maxTemperature: "\(maxTemperatureList[day] ?? 0)",
-                                                    minTemperature: "\(minTemperatureList[day] ?? 0)",
+                                                    maxTemperature: "\(Int(maxTemperatureList[day] ?? 0))°C",
+                                                    minTemperature: "\(Int(minTemperatureList[day] ?? 0))°C",
                                                     date: dateList[day] ?? Date())
             
             weelyWeatherDTOList.append(weeklyWeatherDTO)
