@@ -20,9 +20,17 @@ final class PageViewController: UIViewController {
                                                       navigationOrientation: .horizontal)
         
         pageViewController.dataSource = self
+        pageViewController.delegate = self
         pageViewController.view.backgroundColor = .clear
         pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
         return pageViewController
+    }()
+    
+    private let pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        return pageControl
     }()
 
     private var viewControllerList: [UIViewController]
@@ -43,10 +51,11 @@ final class PageViewController: UIViewController {
         configureUI()
         setUpConstraints()
         setUpController()
+        setUpPageControl()
     }
     
     private func configureUI() {
-        [backgroundImageView, pageViewController.view].forEach {
+        [backgroundImageView, pageViewController.view, pageControl].forEach {
             view.addSubview($0)
         }
     }
@@ -54,6 +63,7 @@ final class PageViewController: UIViewController {
     private func setUpConstraints() {
         setUpBackgroundImageViewConstraint()
         setUpPageViewControllerConstraints()
+        setUpPageControlConstraint()
     }
     
     private func setUpController() {
@@ -63,10 +73,15 @@ final class PageViewController: UIViewController {
         
         pageViewController.setViewControllers([rootViewController], direction: .forward, animated: true)
     }
+    
+    private func setUpPageControl() {
+        pageControl.numberOfPages = viewControllerList.count
+        pageControl.currentPage = 0
+    }
 }
 
-//MARK: - PageViewController DataSource
-extension PageViewController: UIPageViewControllerDataSource {
+//MARK: - PageViewController DataSource, Delegate
+extension PageViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let index = viewControllerList.firstIndex(of: viewController) else { return nil }
         let previousIndex = index - 1
@@ -88,6 +103,13 @@ extension PageViewController: UIPageViewControllerDataSource {
         
         return viewControllerList[nextIndex]
     }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard let displayViewController = pageViewController.viewControllers?.first,
+              let index = viewControllerList.firstIndex(of: displayViewController) else { return }
+        
+        pageControl.currentPage = index
+    }
 }
 
 // MARK: - Constraints
@@ -106,7 +128,16 @@ extension PageViewController {
             pageViewController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             pageViewController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             pageViewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            pageViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            pageViewController.view.bottomAnchor.constraint(equalTo: pageControl.topAnchor)
+        ])
+    }
+    
+    private func setUpPageControlConstraint() {
+        NSLayoutConstraint.activate([
+            pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            pageControl.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
 }
