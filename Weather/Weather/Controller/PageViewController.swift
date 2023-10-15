@@ -33,6 +33,15 @@ final class PageViewController: UIViewController {
         return pageControl
     }()
 
+    private lazy var listButton: UIButton = {
+        let button = UIButton()
+        
+        button.setImage(.init(named: "list-icon"), for: .normal)
+        button.addTarget(self, action: #selector(didTappedListButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private var viewControllerList: [UIViewController]
     
     init(viewControllerList: [UIViewController]) {
@@ -55,7 +64,7 @@ final class PageViewController: UIViewController {
     }
     
     private func configureUI() {
-        [backgroundImageView, pageViewController.view, pageControl].forEach {
+        [backgroundImageView, pageViewController.view, pageControl, listButton].forEach {
             view.addSubview($0)
         }
     }
@@ -64,6 +73,7 @@ final class PageViewController: UIViewController {
         setUpBackgroundImageViewConstraint()
         setUpPageViewControllerConstraints()
         setUpPageControlConstraint()
+        setUpListButtonConstraint()
     }
     
     private func setUpController() {
@@ -77,6 +87,14 @@ final class PageViewController: UIViewController {
     private func setUpPageControl() {
         pageControl.numberOfPages = viewControllerList.count
         pageControl.currentPage = 0
+    }
+}
+
+// MARK: - Button Action
+extension PageViewController {
+    @objc
+    private func didTappedListButton() {
+        
     }
 }
 
@@ -137,7 +155,16 @@ extension PageViewController {
             pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            pageControl.heightAnchor.constraint(equalToConstant: 50)
+            pageControl.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    private func setUpListButtonConstraint() {
+        NSLayoutConstraint.activate([
+            listButton.centerYAnchor.constraint(equalTo: pageControl.centerYAnchor),
+            listButton.trailingAnchor.constraint(equalTo: pageControl.trailingAnchor, constant: -20),
+            listButton.widthAnchor.constraint(equalToConstant: 20),
+            listButton.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
 }
