@@ -11,7 +11,7 @@ import RxSwift
 final class WeatherViewController: UIViewController {
     private let weatherView = WeatherView()
     private let viewModel: WeatherViewModel
-    private let cityName: String
+    let cityName: String
     
     private var disposeBag = DisposeBag()
     private var weatherTrigger = PublishSubject<String>()
