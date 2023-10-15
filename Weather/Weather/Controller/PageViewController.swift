@@ -94,7 +94,7 @@ final class PageViewController: UIViewController {
 extension PageViewController {
     @objc
     private func didTappedListButton() {
-        let searchViewController = SearchViewController(cityNameList: ["Seoul"])
+        let searchViewController = SearchViewController(cityNameList: ["Seoul", "LA"])
         let navigationController = UINavigationController(rootViewController: searchViewController)
         
         navigationController.modalPresentationStyle = .fullScreen

@@ -47,9 +47,9 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
 
         configureUI()
-        setUpConstraints()
         setUpViewController()
         setUpSearchController()
+        setUpConstraints()
         setUpDiffableDataSource()
         setUpDiffableDataSourceSnapShot()
     }
@@ -78,6 +78,7 @@ final class SearchViewController: UIViewController {
         
         searchViewController.searchBar.placeholder = "Search Location"
         navigationItem.searchController = searchViewController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 }
 
