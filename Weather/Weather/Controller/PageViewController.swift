@@ -94,7 +94,10 @@ final class PageViewController: UIViewController {
 extension PageViewController {
     @objc
     private func didTappedListButton() {
+        let searchViewController = SearchViewController()
+        let navigationController = UINavigationController(rootViewController: searchViewController)
         
+        present(navigationController, animated: true)
     }
 }
 
