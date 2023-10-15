@@ -95,7 +95,9 @@ final class WeeklyWeatherTableViewCell: UITableViewCell, ReuseIdentifiable {
             mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            temperatureStackView.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.3)
         ])
         
         dayLabel.setContentHuggingPriority(.init(1), for: .horizontal)
