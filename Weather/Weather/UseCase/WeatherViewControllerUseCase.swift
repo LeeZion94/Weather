@@ -25,7 +25,7 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
     func convertTodayWeatherDTO(forecastResult: ForecastResult) -> TodayWeatherDTO? {
         guard let todayListItem = forecastResult.list.first else { return nil }
         let todayWeather = todayListItem.weather
-//        let result = myDouble.rounded(.towardZero) // 3
+
         return TodayWeatherDTO(cityName: forecastResult.city.name,
                                weatherDescription: todayWeather.first?.description ?? "",
                                temperature: "\(Int(todayListItem.main.temp))°C")
