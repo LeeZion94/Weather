@@ -6,20 +6,23 @@
 //
 
 import UIKit
+import MapKit
 
 final class SearchResultViewController: UIViewController {
     enum Section {
         case main
     }
     
-    private let compositionalLayout: UICollectionViewCompositionalLayout = {
-        let listLayout = UICollectionLayoutListConfiguration(appearance: .plain)
+    private let flowLayout: UICollectionViewFlowLayout = {
+        let flowLayout = UICollectionViewFlowLayout()
         
-        return UICollectionViewCompositionalLayout.list(using: listLayout)
+        flowLayout.scrollDirection = .vertical
+        flowLayout.itemSize = .init(width: UIScreen.main.bounds.width - 20, height: 70)
+        return flowLayout
     }()
     
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: compositionalLayout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         
         collectionView.delegate = self
         collectionView.backgroundColor = .black
@@ -27,7 +30,16 @@ final class SearchResultViewController: UIViewController {
         return collectionView
     }()
     
-    private var diffableDataSource: UICollectionViewDiffableDataSource<Section, String>?
+    private var diffableDataSource: UICollectionViewDiffableDataSource<Section, SearchResultDTO>?
+    
+    private let searchCompleter: MKLocalSearchCompleter = {
+        let searchCompleter = MKLocalSearchCompleter()
+        
+        searchCompleter.resultTypes = .address
+        return searchCompleter
+    }()
+    
+    private var searchResults: [MKLocalSearchCompletion] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,36 +66,27 @@ final class SearchResultViewController: UIViewController {
     
     private func setUpViewController() {
         view.backgroundColor = .black
+        searchCompleter.delegate = self
     }
 }
 
-// MARK: - Diffable DataSource
-extension SearchResultViewController {
-    private func setUpDiffableDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<SearchCollectionViewCell, String> { cell, indexPath, cityName in
-            cell.setUpContents(title: cityName, isSearchResult: true)
-        }
+// MARK: - MKLocalSearchCompleter Delegate
+extension SearchResultViewController: MKLocalSearchCompleterDelegate {
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        let cityNameList = completer.results.map { SearchResultDTO(cityName: $0.title) }
         
-        diffableDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, cityName in
-            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration,
-                                                                for: indexPath,
-                                                                item: cityName)
-        })
-    }
-    
-    private func setUpDiffableDataSourceSanpShot(cityNameList: [String] = []) {
-        var snapShot = NSDiffableDataSourceSnapshot<Section, String>()
-        
-        snapShot.appendSections([.main])
-        snapShot.appendItems(cityNameList)
-        diffableDataSource?.apply(snapShot)
+        setUpDiffableDataSourceSanpShot(cityNameList: cityNameList)
     }
 }
 
 // MARK: - SearchBar Delegate
 extension SearchResultViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
+        if searchText.count == 0 {
+            return
+        }
+        
+        searchCompleter.queryFragment = searchText
     }
 }
 
@@ -91,5 +94,28 @@ extension SearchResultViewController: UISearchBarDelegate {
 extension SearchResultViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+    }
+}
+
+// MARK: - Diffable DataSource
+extension SearchResultViewController {
+    private func setUpDiffableDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<SearchCollectionViewCell, SearchResultDTO> { cell, indexPath, searchResultDTO in
+            cell.setUpContents(title: searchResultDTO.cityName, isSearchResult: true)
+        }
+        
+        diffableDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, searchResultDTO in
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration,
+                                                                for: indexPath,
+                                                                item: searchResultDTO)
+        })
+    }
+    
+    private func setUpDiffableDataSourceSanpShot(cityNameList: [SearchResultDTO] = []) {
+        var snapShot = NSDiffableDataSourceSnapshot<Section, SearchResultDTO>()
+        
+        snapShot.appendSections([.main])
+        snapShot.appendItems(cityNameList)
+        diffableDataSource?.apply(snapShot)
     }
 }

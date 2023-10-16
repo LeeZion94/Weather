@@ -30,7 +30,7 @@ final class SearchCollectionViewCell: UICollectionViewListCell {
     }
     
     func setUpContents(title: String, isSearchResult: Bool = false) {
-        titleLabel.font = isSearchResult ? .systemFont(ofSize: 15) : .systemFont(ofSize: 30)
+        titleLabel.font = isSearchResult ? .systemFont(ofSize: 20) : .systemFont(ofSize: 30)
         
         titleLabel.text = title
     }
