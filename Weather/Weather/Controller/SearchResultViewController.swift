@@ -8,10 +8,16 @@
 import UIKit
 import MapKit
 
+protocol SearchResultViewControllerDelegate: AnyObject {
+    func didTappedSearchResultLocation(location: Location)
+}
+
 final class SearchResultViewController: UIViewController, AlertControllerShowable {
     enum Section {
         case main
     }
+    
+    weak var delegate: SearchResultViewControllerDelegate?
     
     private let emptyView: SearchResultEmptyView = {
         let emptyView = SearchResultEmptyView()
@@ -91,15 +97,19 @@ extension SearchResultViewController: UICollectionViewDelegate {
         let searchRequest = MKLocalSearch.Request(completion: selectedLocalCompletion)
         let localSearch = MKLocalSearch(request: searchRequest)
         
-        localSearch.start { response, error in
+        localSearch.start { [weak self] response, error in
             if let _ = error {
-                self.showAlert(title: "장소 찾기 에러",
-                               message: "찾을 수 없는 장소 입니다",
-                               style: .alert)
+                self?.showAlert(title: "장소 찾기 에러", message: "찾을 수 없는 장소 입니다", style: .alert)
                 return
             }
             
+            guard let mapItem = response?.mapItems.first else { return }
+            let coordinate = Coordinate(coordinate: mapItem.placemark.coordinate)
+            let locationName = mapItem.name ?? ""
+            let location = Location(name: locationName, coordiante: coordinate)
             
+            self?.delegate?.didTappedSearchResultLocation(location: location)
+            self?.dismiss(animated: true)
         }
     }
 }
