@@ -94,13 +94,13 @@ final class SearchViewController: UIViewController {
         let searchResultViewController = SearchResultViewController()
         let searchController = UISearchController(searchResultsController: searchResultViewController)
         
-        
-        searchController.searchBar.placeholder = "Search Location"
-        searchController.searchBar.searchTextField.textColor = .white
-        searchController.searchBar.delegate = searchResultViewController
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.searchBar.placeholder = "Search Location"
+        searchController.searchBar.searchTextField.leftView?.tintColor = .white
+        searchController.searchBar.delegate = searchResultViewController
+        searchController.searchBar.searchTextField.textColor = .white
         UISearchBar.appearance().tintColor = .white
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 }
 
