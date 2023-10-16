@@ -8,8 +8,6 @@
 import RxSwift
 import RxCocoa
 
-
-
 final class WeatherViewModel {
     struct Input {
         let weatherTrigger: Observable<Coordinate>
@@ -21,10 +19,13 @@ final class WeatherViewModel {
         let dayOfWeek: Observable<String>
         let hourlyWeather: Observable<[HourlyWeatherDTO]>
         let weeklyWeatehr: Observable<([WeeklyWeatherDTO], [DetailWeatherDTO])>
+        let forecastFetchFailure: Observable<String>
     }
     
     private let weatherRepository: WeatherRepositoryType
     private let weatherViewControllerUseCase: WeatherViewControllerUseCaseType
+    
+    private let forecastFetchFailureTrigger =  PublishSubject<String>()
     
     init(weatherRepository: WeatherRepositoryType,
          weatherViewControllerUseCase: WeatherViewControllerUseCaseType) {
@@ -38,7 +39,8 @@ final class WeatherViewModel {
                 switch result {
                 case .success(let forecastResult):
                     return forecastResult
-                case .failure:
+                case .failure(let error):
+                    self.forecastFetchFailureTrigger.onNext(error.errorDescription)
                     return nil
                 }
             }
@@ -67,6 +69,7 @@ final class WeatherViewModel {
                       todayWeather: todayWeather,
                       dayOfWeek: dayOfWeek,
                       hourlyWeather: hourlyWeather,
-                      weeklyWeatehr: weeklyWeather)
+                      weeklyWeatehr: weeklyWeather,
+                      forecastFetchFailure: forecastFetchFailureTrigger.asObservable())
     }
 }

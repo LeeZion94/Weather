@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-final class WeatherViewController: UIViewController {
+final class WeatherViewController: UIViewController, AlertControllerShowable {
     private let weatherView = WeatherView()
     private let viewModel: WeatherViewModel
     let location: Location
@@ -55,6 +55,7 @@ extension WeatherViewController {
         bindDayOfWeek(dayOfWeek: output.dayOfWeek)
         bindHourlyWeather(hourlyWeather: output.hourlyWeather)
         bindWeeklyWeather(weeklyWeather: output.weeklyWeatehr)
+        bindForecastFetchFailure(forecastFetchFailure: output.forecastFetchFailure)
     }
     
     private func bindTodayWeather(todayWeather: Observable<TodayWeatherDTO>) {
@@ -80,6 +81,14 @@ extension WeatherViewController {
         weeklyWeather.bind { (weeklyWeatherDTOList, detailWeatherDTOList) in
             self.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList,
                                                             detailWeatherDTOList: detailWeatherDTOList)
+        }.disposed(by: disposeBag)
+    }
+    
+    private func bindForecastFetchFailure(forecastFetchFailure: Observable<String>) {
+        forecastFetchFailure.bind { errorMessage in
+            DispatchQueue.main.async {
+                self.showAlert(message: errorMessage, style: .alert)
+            }
         }.disposed(by: disposeBag)
     }
 }
