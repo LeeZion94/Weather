@@ -48,6 +48,7 @@ final class SearchViewController: UIViewController {
         configureUI()
         setUpViewController()
         setUpSearchController()
+        setUpNavigationBarAppearance()
         setUpConstraints()
         setUpDiffableDataSource()
         setUpDiffableDataSourceSnapShot()
@@ -69,16 +70,34 @@ final class SearchViewController: UIViewController {
     private func setUpViewController() {
         view.backgroundColor = .black
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.title = "날씨"
+    }
+    
+    private func setUpNavigationBarAppearance() {
+        let navigationBarAppearance = UINavigationBarAppearance()
+        
+        navigationBarAppearance.configureWithOpaqueBackground()
+        navigationBarAppearance.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.white
+        ]
+        
+        navigationBarAppearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.white
+        ]
+        
+        navigationBarAppearance.backgroundColor = .black
+        UINavigationBar.appearance().standardAppearance = navigationBarAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
     }
     
     private func setUpSearchController() {
         let searchController = UISearchController(searchResultsController: nil)
         
         searchController.searchBar.placeholder = "Search Location"
+        searchController.searchBar.searchTextField.textColor = .white
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        UISearchBar.appearance().tintColor = .white
     }
 }
 
