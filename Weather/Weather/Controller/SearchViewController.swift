@@ -7,10 +7,17 @@
 
 import UIKit
 
+protocol SearchViewControllerDelegate: AnyObject {
+    func didTappedSearchLocation(index: Int)
+    func didTappedSearchResultLocation(location: Location)
+}
+
 final class SearchViewController: UIViewController, ToastShowable {
     enum Section {
         case main
     }
+    
+    weak var delegate: SearchViewControllerDelegate?
     
     private let flowLayout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -23,6 +30,7 @@ final class SearchViewController: UIViewController, ToastShowable {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         
+        collectionView.delegate = self
         collectionView.backgroundColor = .black
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -112,6 +120,15 @@ extension SearchViewController: SearchResultViewControllerDelegate {
         setUpDiffableDataSourceSnapShot()
         showToast(message: "리스트 추가 완료")
         navigationItem.searchController?.searchBar.searchTextField.text = ""
+        delegate?.didTappedSearchResultLocation(location: location)
+    }
+}
+
+// MARK: - CollectionView Delegate
+extension SearchViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.didTappedSearchLocation(index: indexPath.row)
+        dismiss(animated: true)
     }
 }
 

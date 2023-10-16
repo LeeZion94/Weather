@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let coordinate: Coordinate = .init(latitude: "37.5683", longitude: "126.9778")
         let location: Location = .init(name: "서울특별시", coordiante: coordinate)
         let weatherViewController = WeatherViewController(viewModel: viewModel, location: location)
-        let pageController = PageViewController(viewControllerList: [weatherViewController])
+        let pageController = PageViewController(weatherViewControllerList: [weatherViewController])
         
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = pageController

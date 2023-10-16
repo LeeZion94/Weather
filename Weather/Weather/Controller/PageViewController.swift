@@ -42,10 +42,10 @@ final class PageViewController: UIViewController {
         return button
     }()
     
-    private var viewControllerList: [UIViewController]
+    private var weatherViewControllerList: [WeatherViewController]
     
-    init(viewControllerList: [UIViewController]) {
-        self.viewControllerList = viewControllerList
+    init(weatherViewControllerList: [WeatherViewController]) {
+        self.weatherViewControllerList = weatherViewControllerList
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -79,13 +79,13 @@ final class PageViewController: UIViewController {
     private func setUpController() {
         view.backgroundColor = .systemBackground
         
-        guard let rootViewController = viewControllerList.first else { return }
+        guard let rootViewController = weatherViewControllerList.first else { return }
         
         pageViewController.setViewControllers([rootViewController], direction: .forward, animated: true)
     }
     
     private func setUpPageControl() {
-        pageControl.numberOfPages = viewControllerList.count
+        pageControl.numberOfPages = weatherViewControllerList.count
         pageControl.currentPage = 0
     }
 }
@@ -94,50 +94,64 @@ final class PageViewController: UIViewController {
 extension PageViewController {
     @objc
     private func didTappedListButton() {
-        let coordinate: Coordinate = .init(latitude: "13", longitude: "13")
-        let locationList: [Location] = [.init(name: "서울특별시", coordiante: coordinate),
-                                        .init(name: "서울특별시", coordiante: coordinate),
-                                        .init(name: "서울특별시", coordiante: coordinate),
-                                        .init(name: "서울특별시", coordiante: coordinate),
-                                        .init(name: "서울특별시", coordiante: coordinate),
-                                        .init(name: "서울특별시", coordiante: coordinate),
-                                        .init(name: "서울특별시", coordiante: coordinate)]
-        
+        let locationList = weatherViewControllerList.map { $0.location }
         let searchViewController = SearchViewController(locationList: locationList)
         let navigationController = UINavigationController(rootViewController: searchViewController)
         
+        searchViewController.delegate = self
         navigationController.modalPresentationStyle = .fullScreen
         present(navigationController, animated: true)
+    }
+}
+
+// MARK: - SearchViewController Delegate
+extension PageViewController: SearchViewControllerDelegate {
+    func didTappedSearchLocation(index: Int) {
+        
+    }
+    
+    func didTappedSearchResultLocation(location: Location) {
+        let urlSessionProvider: URLSessionProviderType = URLSessionProvider()
+        let weatherRepository: WeatherRepositoryType = WeatherRepository(urlSessionProvider: urlSessionProvider)
+        let dateConverter: DateConverterType = DateConverter()
+        let weatherViewControllerUseCase: WeatherViewControllerUseCaseType = WeatherViewControllerUseCase(dateConverter: dateConverter)
+        let viewModel: WeatherViewModel = WeatherViewModel(weatherRepository: weatherRepository,
+                                                           weatherViewControllerUseCase: weatherViewControllerUseCase)
+        let weatherViewController = WeatherViewController(viewModel: viewModel, location: location)
+        
+        weatherViewControllerList.append(weatherViewController)
     }
 }
 
 //MARK: - PageViewController DataSource, Delegate
 extension PageViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let index = viewControllerList.firstIndex(of: viewController) else { return nil }
+        guard let weatherViewController = viewController as? WeatherViewController
+                ,let index = weatherViewControllerList.firstIndex(of: weatherViewController) else { return nil }
         let previousIndex = index - 1
         
         if previousIndex < 0 {
             return nil
         }
         
-        return viewControllerList[previousIndex]
+        return weatherViewControllerList[previousIndex]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let index = viewControllerList.firstIndex(of: viewController) else { return nil }
+        guard let weatherViewController = viewController as? WeatherViewController
+                ,let index = weatherViewControllerList.firstIndex(of: weatherViewController) else { return nil }
         let nextIndex = index + 1
         
-        if nextIndex == viewControllerList.count {
+        if nextIndex == weatherViewControllerList.count {
             return nil
         }
         
-        return viewControllerList[nextIndex]
+        return weatherViewControllerList[nextIndex]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        guard let displayViewController = pageViewController.viewControllers?.first,
-              let index = viewControllerList.firstIndex(of: displayViewController) else { return }
+        guard let displayWeatherViewController = pageViewController.viewControllers?.first as? WeatherViewController,
+              let index = weatherViewControllerList.firstIndex(of: displayWeatherViewController) else { return }
         
         pageControl.currentPage = index
     }
