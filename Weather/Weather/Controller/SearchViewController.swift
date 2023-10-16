@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController, ToastShowable {
     enum Section {
         case main
     }
@@ -28,12 +28,12 @@ final class SearchViewController: UIViewController {
         return collectionView
     }()
     
-    private var diffableDataSource: UICollectionViewDiffableDataSource<Section, String>?
+    private var diffableDataSource: UICollectionViewDiffableDataSource<Section, Location>?
     
-    private let cityNameList: [String]
+    private var locationList: [Location]
     
-    init(cityNameList: [String]) {
-        self.cityNameList = cityNameList
+    init(locationList: [Location]) {
+        self.locationList = locationList
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -94,6 +94,7 @@ final class SearchViewController: UIViewController {
         let searchResultViewController = SearchResultViewController()
         let searchController = UISearchController(searchResultsController: searchResultViewController)
         
+        searchResultViewController.delegate = self
         navigationItem.searchController = searchController
         searchController.searchBar.placeholder = "Search Location"
         searchController.searchBar.searchTextField.leftView?.tintColor = .white
@@ -104,23 +105,33 @@ final class SearchViewController: UIViewController {
     }
 }
 
+// MARK: - SearchResultViewController Delegate
+extension SearchViewController: SearchResultViewControllerDelegate {
+    func didTappedSearchResultLocation(location: Location) {
+        locationList.append(location)
+        setUpDiffableDataSourceSnapShot()
+        showToast(message: "리스트 추가 완료")
+        navigationItem.searchController?.searchBar.searchTextField.text = ""
+    }
+}
+
 // MARK: - Diffable DataSource
 extension SearchViewController {
     private func setUpDiffableDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<SearchCollectionViewCell, String> { cell, indexPath, cityName in
-            cell.setUpContents(title: cityName)
+        let cellRegistration = UICollectionView.CellRegistration<SearchCollectionViewCell, Location> { cell, indexPath, location in
+            cell.setUpContents(title: location.name)
         }
         
-        diffableDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, cityName in
-            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: cityName)
+        diffableDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, location in
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: location)
         })
     }
     
     private func setUpDiffableDataSourceSnapShot() {
-        var snapShot = NSDiffableDataSourceSnapshot<Section, String>()
+        var snapShot = NSDiffableDataSourceSnapshot<Section, Location>()
         
         snapShot.appendSections([.main])
-        snapShot.appendItems(cityNameList)
+        snapShot.appendItems(locationList)
         diffableDataSource?.apply(snapShot)
     }
 }
