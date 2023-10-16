@@ -69,6 +69,7 @@ final class SearchViewController: UIViewController {
     private func setUpViewController() {
         view.backgroundColor = .black
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.title = "날씨"
     }
     
