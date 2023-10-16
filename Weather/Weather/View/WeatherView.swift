@@ -64,8 +64,8 @@ final class WeatherView: UIView {
 
 // MARK: - setUpContents
 extension WeatherView {
-    func setUpTodayWeatherViewContents(todayWeatherDTO: TodayWeatherDTO) {
-        todayWeatherView.setUpContents(cityName: todayWeatherDTO.cityName,
+    func setUpTodayWeatherViewContents(locationName: String, todayWeatherDTO: TodayWeatherDTO) {
+        todayWeatherView.setUpContents(cityName: locationName,
                                        weatherDescription: todayWeatherDTO.weatherDescription,
                                        temperature: todayWeatherDTO.temperature)
     }

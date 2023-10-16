@@ -6,7 +6,6 @@
 //
 
 struct TodayWeatherDTO {
-    let cityName: String
     let weatherDescription: String
     let temperature: String
 }

@@ -27,7 +27,7 @@ struct EndPoint {
     }
     
     enum URLInformation {
-        case weather(cityName: String)
+        case weather(latitude: String, longitude: String)
         
         var path: String {
             switch self {
@@ -40,8 +40,9 @@ struct EndPoint {
             var queryItems: [URLQueryItem] = [.init(name: "appid", value: APIKeys.weather)]
             
             switch self {
-            case .weather(let cityName):
-                queryItems.append(.init(name: "q", value: cityName))
+            case .weather(let latitude, let longitude):
+                queryItems.append(.init(name: "lat", value: latitude))
+                queryItems.append(.init(name: "lon", value: longitude))
                 queryItems.append(.init(name: "units", value: "metric"))
             }
             

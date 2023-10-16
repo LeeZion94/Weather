@@ -26,8 +26,7 @@ final class WeatherViewControllerUseCase: WeatherViewControllerUseCaseType {
         guard let todayListItem = forecastResult.list.first else { return nil }
         let todayWeather = todayListItem.weather
 
-        return TodayWeatherDTO(cityName: forecastResult.city.name,
-                               weatherDescription: todayWeather.first?.description ?? "",
+        return TodayWeatherDTO(weatherDescription: todayWeather.first?.description ?? "",
                                temperature: "\(Int(todayListItem.main.temp))°C")
     }
     

@@ -11,14 +11,14 @@ import RxSwift
 final class WeatherViewController: UIViewController {
     private let weatherView = WeatherView()
     private let viewModel: WeatherViewModel
-    let cityName: String
+    let location: Location
     
     private var disposeBag = DisposeBag()
-    private var weatherTrigger = PublishSubject<String>()
+    private var weatherTrigger = PublishSubject<Coordinate>()
     
-    init(viewModel: WeatherViewModel, cityName: String) {
+    init(viewModel: WeatherViewModel, location: Location) {
         self.viewModel = viewModel
-        self.cityName = cityName
+        self.location = location
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -37,7 +37,7 @@ final class WeatherViewController: UIViewController {
         setUpController()
         bind()
         
-        weatherTrigger.onNext(cityName)
+        weatherTrigger.onNext(location.coordiante)
     }
 
     private func setUpController() {
@@ -59,7 +59,8 @@ extension WeatherViewController {
     
     private func bindTodayWeather(todayWeather: Observable<TodayWeatherDTO>) {
         todayWeather.bind { todayWeatherDTO in
-            self.weatherView.setUpTodayWeatherViewContents(todayWeatherDTO: todayWeatherDTO)
+            self.weatherView.setUpTodayWeatherViewContents(locationName: self.location.name,
+                                                           todayWeatherDTO: todayWeatherDTO)
         }.disposed(by: disposeBag)
     }
     
