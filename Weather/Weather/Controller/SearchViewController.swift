@@ -61,8 +61,8 @@ final class SearchViewController: UIViewController {
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5)
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5)
         ])
     }
     
