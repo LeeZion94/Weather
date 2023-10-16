@@ -13,6 +13,13 @@ final class SearchResultViewController: UIViewController {
         case main
     }
     
+    private let emptyView: SearchResultEmptyView = {
+        let emptyView = SearchResultEmptyView()
+        
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        return emptyView
+    }()
+    
     private let flowLayout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         
@@ -52,7 +59,9 @@ final class SearchResultViewController: UIViewController {
     }
     
     private func configureUI() {
-        view.addSubview(collectionView)
+        [collectionView, emptyView].forEach {
+            view.addSubview($0)
+        }
     }
     
     private func setUpConstraints() {
@@ -60,7 +69,12 @@ final class SearchResultViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
+            
+            emptyView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            emptyView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            emptyView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+            emptyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
         ])
     }
     
@@ -76,6 +90,7 @@ extension SearchResultViewController: MKLocalSearchCompleterDelegate {
         let cityNameList = completer.results.map { SearchResultDTO(cityName: $0.title) }
         
         setUpDiffableDataSourceSanpShot(cityNameList: cityNameList)
+        emptyView.isHidden = cityNameList.count == 0 ? false : true
     }
 }
 
