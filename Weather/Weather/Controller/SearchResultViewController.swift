@@ -21,6 +21,7 @@ final class SearchResultViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: compositionalLayout)
         
+        collectionView.delegate = self
         collectionView.backgroundColor = .black
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -76,5 +77,19 @@ extension SearchResultViewController {
         snapShot.appendSections([.main])
         snapShot.appendItems(cityNameList)
         diffableDataSource?.apply(snapShot)
+    }
+}
+
+// MARK: - SearchBar Delegate
+extension SearchResultViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print(searchText)
+    }
+}
+
+// MARK: - CollectionView Delegate
+extension SearchResultViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
     }
 }

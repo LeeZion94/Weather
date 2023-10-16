@@ -94,8 +94,10 @@ final class SearchViewController: UIViewController {
         let searchResultViewController = SearchResultViewController()
         let searchController = UISearchController(searchResultsController: searchResultViewController)
         
+        
         searchController.searchBar.placeholder = "Search Location"
         searchController.searchBar.searchTextField.textColor = .white
+        searchController.searchBar.delegate = searchResultViewController
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         UISearchBar.appearance().tintColor = .white
