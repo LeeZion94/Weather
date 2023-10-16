@@ -107,7 +107,11 @@ extension PageViewController {
 // MARK: - SearchViewController Delegate
 extension PageViewController: SearchViewControllerDelegate {
     func didTappedSearchLocation(index: Int) {
+        let weatherViewController = weatherViewControllerList[index]
         
+        pageViewController.setViewControllers([weatherViewController], direction: .forward, animated: true)
+        pageControl.numberOfPages = weatherViewControllerList.count
+        pageControl.currentPage = index
     }
     
     func didTappedSearchResultLocation(location: Location) {
