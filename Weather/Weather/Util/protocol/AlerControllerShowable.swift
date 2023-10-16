@@ -15,8 +15,8 @@ protocol AlertControllerShowable where Self: UIViewController {
 }
 
 extension AlertControllerShowable {
-    func showAlert(title: String = "",
-                   message: String = "",
+    func showAlert(title: String? = "",
+                   message: String? = "",
                    style: UIAlertController.Style,
                    actionList: [UIAlertAction]? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
