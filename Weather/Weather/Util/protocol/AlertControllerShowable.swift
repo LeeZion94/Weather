@@ -1,5 +1,5 @@
 //
-//  AlerControllerShowable.swift
+//  AlertControllerShowable.swift
 //  Weather
 //
 //  Created by Hyungmin Lee on 2023/10/16.
