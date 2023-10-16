@@ -84,11 +84,19 @@ final class SearchResultViewController: UIViewController {
     }
 }
 
+// MARK: - CollectionView Delegate
+extension SearchResultViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+    }
+}
+
 // MARK: - MKLocalSearchCompleter Delegate
 extension SearchResultViewController: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         let cityNameList = completer.results.map { SearchResultDTO(cityName: $0.title) }
         
+        searchResults = completer.results
         setUpDiffableDataSourceSanpShot(cityNameList: cityNameList)
         emptyView.isHidden = cityNameList.count == 0 ? false : true
     }
@@ -102,13 +110,6 @@ extension SearchResultViewController: UISearchBarDelegate {
         }
         
         searchCompleter.queryFragment = searchText
-    }
-}
-
-// MARK: - CollectionView Delegate
-extension SearchResultViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
     }
 }
 
