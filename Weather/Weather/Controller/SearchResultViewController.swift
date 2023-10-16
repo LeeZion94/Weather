@@ -8,7 +8,7 @@
 import UIKit
 import MapKit
 
-final class SearchResultViewController: UIViewController {
+final class SearchResultViewController: UIViewController, AlertControllerShowable {
     enum Section {
         case main
     }
@@ -87,7 +87,20 @@ final class SearchResultViewController: UIViewController {
 // MARK: - CollectionView Delegate
 extension SearchResultViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedLocalCompletion = searchResults[indexPath.row]
+        let searchRequest = MKLocalSearch.Request(completion: selectedLocalCompletion)
+        let localSearch = MKLocalSearch(request: searchRequest)
         
+        localSearch.start { response, error in
+            if let _ = error {
+                self.showAlert(title: "장소 찾기 에러",
+                               message: "찾을 수 없는 장소 입니다",
+                               style: .alert)
+                return
+            }
+            
+            
+        }
     }
 }
 
