@@ -12,19 +12,18 @@ final class SearchViewController: UIViewController {
         case main
     }
     
-    private let compositionalLayout: UICollectionViewCompositionalLayout = {
-        return UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
-            let listLayout = UICollectionLayoutListConfiguration(appearance: .grouped)
-            let section = NSCollectionLayoutSection.list(using: listLayout, layoutEnvironment: layoutEnvironment)
-            
-            section.interGroupSpacing = 10
-            return section
-        }
+    private let flowLayout: UICollectionViewFlowLayout = {
+        let flowLayout = UICollectionViewFlowLayout()
+        
+        flowLayout.scrollDirection = .vertical
+        flowLayout.itemSize = .init(width: UIScreen.main.bounds.width - 20, height: 50)
+        return flowLayout
     }()
     
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: compositionalLayout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         
+        collectionView.backgroundColor = .black
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -74,10 +73,10 @@ final class SearchViewController: UIViewController {
     }
     
     private func setUpSearchController() {
-        let searchViewController = UISearchController(searchResultsController: nil)
+        let searchController = UISearchController(searchResultsController: nil)
         
-        searchViewController.searchBar.placeholder = "Search Location"
-        navigationItem.searchController = searchViewController
+        searchController.searchBar.placeholder = "Search Location"
+        navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
 }
