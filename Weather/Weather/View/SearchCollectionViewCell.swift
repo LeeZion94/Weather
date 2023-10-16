@@ -11,7 +11,6 @@ final class SearchCollectionViewCell: UICollectionViewListCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         
-        label.font = .systemFont(ofSize: 30)
         label.textColor = .white
         label.backgroundColor = .black
         label.layer.cornerRadius = 4.0
@@ -30,7 +29,9 @@ final class SearchCollectionViewCell: UICollectionViewListCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setUpContents(title: String) {
+    func setUpContents(title: String, isSearchResult: Bool = false) {
+        titleLabel.font = isSearchResult ? .systemFont(ofSize: 15) : .systemFont(ofSize: 30)
+        
         titleLabel.text = title
     }
     

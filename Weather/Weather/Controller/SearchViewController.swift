@@ -91,7 +91,8 @@ final class SearchViewController: UIViewController {
     }
     
     private func setUpSearchController() {
-        let searchController = UISearchController(searchResultsController: nil)
+        let searchResultViewController = SearchResultViewController()
+        let searchController = UISearchController(searchResultsController: searchResultViewController)
         
         searchController.searchBar.placeholder = "Search Location"
         searchController.searchBar.searchTextField.textColor = .white
