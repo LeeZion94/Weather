@@ -133,6 +133,6 @@ extension WeatherViewController {
     private func showForecastFetchFailureAlert(errorMessage: String) {
         let checkAlertAction: UIAlertAction = .init(title: "확인", style: .default)
         
-        self.showAlert(title: "네트워크 에러", message: errorMessage, style: .alert, actionList: [checkAlertAction])
+        showAlert(title: "네트워크 에러", message: errorMessage, style: .alert, actionList: [checkAlertAction])
     }
 }

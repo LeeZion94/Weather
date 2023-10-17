@@ -10,14 +10,14 @@ import RxSwift
 import RxCocoa
 
 protocol URLSessionProviderType {
-    func dataTask(url: URL?) -> Observable<Result<Data, APIError>>
+    func dataTask(url: URL?, header: [String: String]?, httpMethod: String) -> Observable<Result<Data, APIError>>
 }
 
 final class URLSessionProvider: URLSessionProviderType {
     private var dataTask: URLSessionDataTask?
     
-    func dataTask(url: URL?) -> Observable<Result<Data, APIError>> {
-        guard let urlRequest = setUpUrlRequest(url: url) else {
+    func dataTask(url: URL?, header: [String: String]?, httpMethod: String) -> Observable<Result<Data, APIError>> {
+        guard let urlRequest = setUpUrlRequest(url: url, header: header, httpMethod: httpMethod) else {
             return Observable.just(.failure(.invalidUrl))
         }
         
@@ -34,10 +34,15 @@ final class URLSessionProvider: URLSessionProviderType {
 
 // MARK: - Private
 extension URLSessionProvider {
-    private func setUpUrlRequest(url: URL?) -> URLRequest? {
+    private func setUpUrlRequest(url: URL?, header: [String: String]?, httpMethod: String) -> URLRequest? {
         guard let url else { return nil }
         var urlRequest = URLRequest(url: url)
         
+        header?.forEach { (key, value) in
+            urlRequest.addValue(value, forHTTPHeaderField: key)
+        }
+        
+        urlRequest.httpMethod = httpMethod
         return urlRequest
     }
 }

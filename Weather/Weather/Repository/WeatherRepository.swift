@@ -23,7 +23,7 @@ final class WeatherRepository: WeatherRepositoryType {
         let endPoint = EndPoint(urlInformation: .weather(latitude: coordinate.latitude,
                                                          longitude: coordinate.longitude))
         
-        return urlSessionProvider.dataTask(url: endPoint.url).map { result in
+        return urlSessionProvider.dataTask(url: endPoint.url, header: nil, httpMethod: "get").map { result in
             switch result {
             case .success(let data):
                 guard let forecaseResult = try? JSONDecoder().decode(ForecastResult.self, from: data) else {
