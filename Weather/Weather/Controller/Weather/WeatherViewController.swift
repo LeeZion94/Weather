@@ -59,33 +59,33 @@ extension WeatherViewController {
     }
     
     private func bindTodayWeather(todayWeather: Observable<TodayWeatherDTO>) {
-        todayWeather.bind { todayWeatherDTO in
+        todayWeather.bind { [unowned self] todayWeatherDTO in
             self.weatherView.setUpTodayWeatherViewContents(locationName: self.location.name,
                                                            todayWeatherDTO: todayWeatherDTO)
         }.disposed(by: disposeBag)
     }
     
     private func bindDayOfWeek(dayOfWeek: Observable<String>) {
-        dayOfWeek.bind { dayOfWeek in
+        dayOfWeek.bind { [unowned self] dayOfWeek in
             self.weatherView.setUpDayOfWeekView(day: dayOfWeek)
         }.disposed(by: disposeBag)
     }
     
     private func bindHourlyWeather(hourlyWeather: Observable<[HourlyWeatherDTO]>) {
-        hourlyWeather.bind { hourlyWeatherDTOList in
+        hourlyWeather.bind { [unowned self] hourlyWeatherDTOList in
             self.weatherView.setUpHourlyWeatherViewContents(hourlyWeatherDTOList: hourlyWeatherDTOList)
         }.disposed(by: disposeBag)
     }
     
     private func bindWeeklyWeather(weeklyWeather: Observable<([WeeklyWeatherDTO], [DetailWeatherDTO])>) {
-        weeklyWeather.bind { (weeklyWeatherDTOList, detailWeatherDTOList) in
+        weeklyWeather.bind { [unowned self] (weeklyWeatherDTOList, detailWeatherDTOList) in
             self.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList,
                                                             detailWeatherDTOList: detailWeatherDTOList)
         }.disposed(by: disposeBag)
     }
     
     private func bindForecastFetchFailure(forecastFetchFailure: Observable<String>) {
-        forecastFetchFailure.bind { errorMessage in
+        forecastFetchFailure.bind { [unowned self] errorMessage in
             self.showForecastFetchFailureAlert(errorMessage: errorMessage)
         }.disposed(by: disposeBag)
     }
