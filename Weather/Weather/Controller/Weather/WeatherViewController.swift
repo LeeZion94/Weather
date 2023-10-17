@@ -77,7 +77,6 @@ extension WeatherViewController {
         let input = WeatherViewModel.Input(weatherTrigger: weatherTrigger.asObservable())
         let output = viewModel.transform(input: input)
         
-//        bindForeCastResult(forecastResult: output.forecastResult)
         bindTodayWeather(todayWeather: output.todayWeather)
         bindDayOfWeek(dayOfWeek: output.dayOfWeek)
         bindHourlyWeather(hourlyWeather: output.hourlyWeather)
@@ -85,18 +84,11 @@ extension WeatherViewController {
         bindForecastFetchFailure(forecastFetchFailure: output.forecastFetchFailure)
     }
     
-//    private func bindForeCastResult(forecastResult: Observable<ForecastResult>) {
-//        forecastResult.bind { [unowned self] _ in
-//            DispatchQueue.main.async {
-//                self.activityIndicatorView.stopAnimating()
-//            }
-//        }.disposed(by: disposeBag)
-//    }
-    
     private func bindTodayWeather(todayWeather: Driver<TodayWeatherDTO?>) {
         todayWeather
             .compactMap { $0 }
             .drive { [unowned self] todayWeatherDTO in
+                self.activityIndicatorView.stopAnimating()
                 self.weatherView.setUpTodayWeatherViewContents(locationName: self.location.name,
                                                                todayWeatherDTO: todayWeatherDTO)
             }.disposed(by: disposeBag)
