@@ -17,6 +17,7 @@ final class DetailWeatherViewController: UIViewController {
         let tableView = UITableView()
         
         tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
         tableView.allowsSelection = false
         tableView.showsVerticalScrollIndicator = false
         tableView.register(WeeklyWeatherTableViewCell.self, forCellReuseIdentifier: WeeklyWeatherTableViewCell.id)

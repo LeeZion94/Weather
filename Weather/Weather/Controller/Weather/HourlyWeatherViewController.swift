@@ -12,21 +12,19 @@ final class HourlyWeatherViewController: UIViewController {
         case main
     }
     
-    private let compositionalLayout: UICollectionViewCompositionalLayout = {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(50), heightDimension: .fractionalHeight(1.0))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-
-        section.orthogonalScrollingBehavior = .continuous
-        return .init(section: section)
+    private let flowLayout: UICollectionViewFlowLayout = {
+        let flowLayout = UICollectionViewFlowLayout()
+        
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.itemSize = .init(width: 50, height: 110)
+        return flowLayout
     }()
     
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: compositionalLayout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         
         collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
