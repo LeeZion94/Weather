@@ -14,18 +14,17 @@ final class WeatherViewModel {
     }
 
     struct Output {
-        let forecastResult: Observable<ForecastResult>
-        let todayWeather: Observable<TodayWeatherDTO>
-        let dayOfWeek: Observable<String>
-        let hourlyWeather: Observable<[HourlyWeatherDTO]>
-        let weeklyWeatehr: Observable<([WeeklyWeatherDTO], [DetailWeatherDTO])>
-        let forecastFetchFailure: Observable<String>
+        let todayWeather: Driver<TodayWeatherDTO?>
+        let dayOfWeek: Driver<String?>
+        let hourlyWeather: Driver<[HourlyWeatherDTO]?>
+        let weeklyWeatehr: Driver<([WeeklyWeatherDTO], [DetailWeatherDTO])?>
+        let forecastFetchFailure: Driver<String?>
     }
     
     private let weatherRepository: WeatherRepositoryType
     private let weatherViewControllerUseCase: WeatherViewControllerUseCaseType
     
-    private let forecastFetchFailureTrigger =  PublishSubject<String>()
+    private let forecastFetchFailureTrigger =  PublishSubject<String?>()
     
     init(weatherRepository: WeatherRepositoryType,
          weatherViewControllerUseCase: WeatherViewControllerUseCaseType) {
@@ -46,30 +45,29 @@ final class WeatherViewModel {
             }
         }.share()
         
-        let todayWeather: Observable<TodayWeatherDTO> = forecastResult.compactMap { forecastResult in
+        let todayWeather: Driver<TodayWeatherDTO?> = forecastResult.map { forecastResult in
             return self.weatherViewControllerUseCase.convertTodayWeatherDTO(forecastResult: forecastResult)
-        }
+        }.asDriver(onErrorJustReturn: nil)
         
-        let dayOfWeek: Observable<String> = forecastResult.compactMap { forecastResult in
+        let dayOfWeek: Driver<String?> = forecastResult.map { forecastResult in
             return self.weatherViewControllerUseCase.convertDayOfWeekString(forecastResult: forecastResult)
-        }
+        }.asDriver(onErrorJustReturn: nil)
         
-        let hourlyWeather: Observable<[HourlyWeatherDTO]> = forecastResult.map { forecastResult in
+        let hourlyWeather: Driver<[HourlyWeatherDTO]?> = forecastResult.map { forecastResult in
             return self.weatherViewControllerUseCase.convertHourlyWeatherDTOList(forecastResult: forecastResult)
-        }
+        }.asDriver(onErrorJustReturn: nil)
         
-        let weeklyWeather: Observable<([WeeklyWeatherDTO], [DetailWeatherDTO])> = forecastResult.compactMap { forecastResult in
+        let weeklyWeather: Driver<([WeeklyWeatherDTO], [DetailWeatherDTO])?> = forecastResult.map { forecastResult in
             guard let detailWeatherDTOList = self.weatherViewControllerUseCase.convertDetailWeatherDTOList(forecastResult: forecastResult) else { return nil }
             let weeklyWeatherDTOList = self.weatherViewControllerUseCase.convertWeeklyWeatherDTOList(forecastResult: forecastResult)
             
             return (weeklyWeatherDTOList, detailWeatherDTOList)
-        }
+        }.asDriver(onErrorJustReturn: nil)
         
-        return Output(forecastResult: forecastResult,
-                      todayWeather: todayWeather,
+        return Output(todayWeather: todayWeather,
                       dayOfWeek: dayOfWeek,
                       hourlyWeather: hourlyWeather,
                       weeklyWeatehr: weeklyWeather,
-                      forecastFetchFailure: forecastFetchFailureTrigger.asObservable())
+                      forecastFetchFailure: forecastFetchFailureTrigger.asDriver(onErrorJustReturn: nil))
     }
 }

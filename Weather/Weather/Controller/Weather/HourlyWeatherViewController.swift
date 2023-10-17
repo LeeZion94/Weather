@@ -80,9 +80,6 @@ extension HourlyWeatherViewController {
         
         snapShot.appendSections([.main])
         snapShot.appendItems(hourlyWeatherDTOList)
-        
-        DispatchQueue.main.async {
-            self.diffableDataSource?.apply(snapShot)
-        }
+        self.diffableDataSource?.apply(snapShot)
     }
 }

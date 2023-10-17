@@ -80,10 +80,7 @@ extension DetailWeatherViewController {
         snapShot.appendSections([.weekly, .detail])
         snapShot.appendItems(weeklyWeatherDTOList, toSection: .weekly)
         snapShot.appendItems(detailWeatherDTOList, toSection: .detail)
-        
-        DispatchQueue.main.async {
-            self.diffableDataSource?.apply(snapShot)
-        }
+        self.diffableDataSource?.apply(snapShot)
     }
 }
 

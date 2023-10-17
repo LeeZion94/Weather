@@ -7,14 +7,27 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 final class WeatherViewController: UIViewController, AlertControllerShowable {
-    private let weatherView = WeatherView()
-    private let viewModel: WeatherViewModel
     let location: Location
     
+    private let weatherView = WeatherView()
+    
+    private let viewModel: WeatherViewModel
+    
     private var disposeBag = DisposeBag()
+    
     private var weatherTrigger = PublishSubject<Coordinate>()
+    
+    private lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView(style: .large)
+        
+        activityIndicatorView.hidesWhenStopped = true
+        activityIndicatorView.startAnimating()
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicatorView
+    }()
     
     init(viewModel: WeatherViewModel, location: Location) {
         self.viewModel = viewModel
@@ -34,12 +47,25 @@ final class WeatherViewController: UIViewController, AlertControllerShowable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureUI()
+        setUpConstraints()
         setUpController()
         bind()
         
         weatherTrigger.onNext(location.coordiante)
     }
 
+    private func configureUI() {
+        view.addSubview(activityIndicatorView)
+    }
+    
+    private func setUpConstraints() {
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    
     private func setUpController() {
         view.backgroundColor = .clear
     }
@@ -51,6 +77,7 @@ extension WeatherViewController {
         let input = WeatherViewModel.Input(weatherTrigger: weatherTrigger.asObservable())
         let output = viewModel.transform(input: input)
         
+//        bindForeCastResult(forecastResult: output.forecastResult)
         bindTodayWeather(todayWeather: output.todayWeather)
         bindDayOfWeek(dayOfWeek: output.dayOfWeek)
         bindHourlyWeather(hourlyWeather: output.hourlyWeather)
@@ -58,36 +85,54 @@ extension WeatherViewController {
         bindForecastFetchFailure(forecastFetchFailure: output.forecastFetchFailure)
     }
     
-    private func bindTodayWeather(todayWeather: Observable<TodayWeatherDTO>) {
-        todayWeather.bind { [unowned self] todayWeatherDTO in
-            self.weatherView.setUpTodayWeatherViewContents(locationName: self.location.name,
-                                                           todayWeatherDTO: todayWeatherDTO)
-        }.disposed(by: disposeBag)
+//    private func bindForeCastResult(forecastResult: Observable<ForecastResult>) {
+//        forecastResult.bind { [unowned self] _ in
+//            DispatchQueue.main.async {
+//                self.activityIndicatorView.stopAnimating()
+//            }
+//        }.disposed(by: disposeBag)
+//    }
+    
+    private func bindTodayWeather(todayWeather: Driver<TodayWeatherDTO?>) {
+        todayWeather
+            .compactMap { $0 }
+            .drive { [unowned self] todayWeatherDTO in
+                self.weatherView.setUpTodayWeatherViewContents(locationName: self.location.name,
+                                                               todayWeatherDTO: todayWeatherDTO)
+            }.disposed(by: disposeBag)
     }
     
-    private func bindDayOfWeek(dayOfWeek: Observable<String>) {
-        dayOfWeek.bind { [unowned self] dayOfWeek in
-            self.weatherView.setUpDayOfWeekView(day: dayOfWeek)
-        }.disposed(by: disposeBag)
+    private func bindDayOfWeek(dayOfWeek: Driver<String?>) {
+        dayOfWeek
+            .compactMap { $0 }
+            .drive { [unowned self] dayOfWeek in
+                self.weatherView.setUpDayOfWeekView(day: dayOfWeek)
+            }.disposed(by: disposeBag)
     }
     
-    private func bindHourlyWeather(hourlyWeather: Observable<[HourlyWeatherDTO]>) {
-        hourlyWeather.bind { [unowned self] hourlyWeatherDTOList in
-            self.weatherView.setUpHourlyWeatherViewContents(hourlyWeatherDTOList: hourlyWeatherDTOList)
-        }.disposed(by: disposeBag)
+    private func bindHourlyWeather(hourlyWeather: Driver<[HourlyWeatherDTO]?>) {
+        hourlyWeather
+            .compactMap { $0 }
+            .drive { [unowned self] hourlyWeatherDTOList in
+                self.weatherView.setUpHourlyWeatherViewContents(hourlyWeatherDTOList: hourlyWeatherDTOList)
+            }.disposed(by: disposeBag)
     }
     
-    private func bindWeeklyWeather(weeklyWeather: Observable<([WeeklyWeatherDTO], [DetailWeatherDTO])>) {
-        weeklyWeather.bind { [unowned self] (weeklyWeatherDTOList, detailWeatherDTOList) in
-            self.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList,
-                                                            detailWeatherDTOList: detailWeatherDTOList)
-        }.disposed(by: disposeBag)
+    private func bindWeeklyWeather(weeklyWeather: Driver<([WeeklyWeatherDTO], [DetailWeatherDTO])?>) {
+        weeklyWeather
+            .compactMap { $0 }
+            .drive { [unowned self] (weeklyWeatherDTOList, detailWeatherDTOList) in
+                self.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList,
+                                                                detailWeatherDTOList: detailWeatherDTOList)
+            }.disposed(by: disposeBag)
     }
     
-    private func bindForecastFetchFailure(forecastFetchFailure: Observable<String>) {
-        forecastFetchFailure.bind { [unowned self] errorMessage in
-            self.showForecastFetchFailureAlert(errorMessage: errorMessage)
-        }.disposed(by: disposeBag)
+    private func bindForecastFetchFailure(forecastFetchFailure: Driver<String?>) {
+        forecastFetchFailure
+            .compactMap { $0 }
+            .drive { [unowned self] errorMessage in
+                self.showForecastFetchFailureAlert(errorMessage: errorMessage)
+            }.disposed(by: disposeBag)
     }
 }
 
@@ -96,8 +141,6 @@ extension WeatherViewController {
     private func showForecastFetchFailureAlert(errorMessage: String) {
         let checkAlertAction: UIAlertAction = .init(title: "확인", style: .default)
         
-        DispatchQueue.main.async {
-            self.showAlert(title: "네트워크 에러", message: errorMessage, style: .alert, actionList: [checkAlertAction])
-        }
+        self.showAlert(title: "네트워크 에러", message: errorMessage, style: .alert, actionList: [checkAlertAction])
     }
 }

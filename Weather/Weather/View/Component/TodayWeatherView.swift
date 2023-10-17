@@ -56,11 +56,9 @@ final class TodayWeatherView: UIView {
     }
     
     func setUpContents(cityName: String, weatherDescription: String, temperature: String) {
-        DispatchQueue.main.async {
-            self.cityNameLabel.text = cityName
-            self.weatherDescriptionLabel.text = weatherDescription
-            self.temperatureLabel.text = temperature
-        }
+        self.cityNameLabel.text = cityName
+        self.weatherDescriptionLabel.text = weatherDescription
+        self.temperatureLabel.text = temperature
     }
     
     private func configureUI() {

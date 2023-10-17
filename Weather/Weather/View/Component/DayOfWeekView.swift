@@ -30,7 +30,6 @@ final class DayOfWeekView: UIView {
         
         label.font = .systemFont(ofSize: 15)
         label.textColor = .white
-        label.text = "TODAY"
         return label
     }()
     
@@ -46,9 +45,8 @@ final class DayOfWeekView: UIView {
     }
     
     func setUpContents(day: String) {
-        DispatchQueue.main.async {
-            self.dayLabel.text = day
-        }
+        self.todayLabel.text = "TODAY"
+        self.dayLabel.text = day
     }
     
     private func configureUI() {
