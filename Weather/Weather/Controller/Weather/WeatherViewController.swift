@@ -20,6 +20,7 @@ final class WeatherViewController: UIViewController, AlertControllerShowable {
     
     private var weatherTrigger = PublishSubject<Coordinate>()
     
+    /// 얘 반드시 사용될거같은데 lazy네영?
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: .large)
         
@@ -40,6 +41,8 @@ final class WeatherViewController: UIViewController, AlertControllerShowable {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// 사실 여기서 뷰를 갈아끼워주는것도 포멀한 방법은 아니라
+    /// 질문 잘 대답해야할듯여 저라면 과제에서는 굳이 안할듯
     override func loadView() {
         view = weatherView
     }
@@ -87,6 +90,7 @@ extension WeatherViewController {
     private func bindTodayWeather(todayWeather: Driver<TodayWeatherDTO?>) {
         todayWeather
             .compactMap { $0 }
+            /// 갠췬데 확실한 상황이어도 저는 unowned는 잘 안쓰는거 같아여 위험해서
             .drive { [unowned self] todayWeatherDTO in
                 self.activityIndicatorView.stopAnimating()
                 self.weatherView.setUpTodayWeatherViewContents(locationName: self.location.name,

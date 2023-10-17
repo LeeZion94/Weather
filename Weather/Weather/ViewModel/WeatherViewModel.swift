@@ -33,6 +33,9 @@ final class WeatherViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
+        /// flatmap compactmap 차이
+        /// rx에서 flatmap, swift에서 flatmap 차이
+        /// 모나드 개념 
         let forecastResult: Observable<ForecastResult> = input.weatherTrigger.flatMap { coordinate in
             return self.weatherRepository.fetchWeatherData(coordinate: coordinate).compactMap { result in
                 switch result {

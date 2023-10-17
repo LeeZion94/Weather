@@ -7,6 +7,8 @@
 
 import UIKit
 
+/// prepare for reuse가 없네요
+/// 셀이 재사용되는 방식도 물어볼듯
 final class HourlyWeatherCollectionViewCell: UICollectionViewCell, ReuseIdentifiable {
     private let stackView: UIStackView = {
         let stackView = UIStackView()

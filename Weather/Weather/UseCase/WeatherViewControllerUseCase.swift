@@ -7,6 +7,13 @@
 
 import Foundation
 
+/// 제가 알기로는 데이터쪽 인터페이스도
+/// 도메인 레이어에서 들고있어서 데이터가 도메인에 의존해야한다고 알고있는데
+/// 넘 오래전에 공부해서 확인해보시면 좋을 듯 
+
+/// 사실 전 클린아키에 부정적인 입장인데요,
+/// 요 부분이 굳이 필요한가 의문이긴 해요
+/// 그래서 이 과정에서 어떤 이득을 얻을 수 있는지, 하면 뭐가 좋은지 잘 설명해주시면 좋을 듯
 protocol WeatherViewControllerUseCaseType {
     func convertTodayWeatherDTO(forecastResult: ForecastResult) -> TodayWeatherDTO?
     func convertDayOfWeekString(forecastResult: ForecastResult) -> String?

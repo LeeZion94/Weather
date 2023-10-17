@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		40E4F56B2ADEB79500DA6CF4 /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E4F56A2ADEB79500DA6CF4 /* Comments.swift */; };
 		5B95A5A92AD5A572007EBF0C /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B95A5A82AD5A572007EBF0C /* APIKeys.swift */; };
 		5B95A5AB2AD5A696007EBF0C /* URLSessionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B95A5AA2AD5A696007EBF0C /* URLSessionProvider.swift */; };
 		5B95A5AD2AD5A6E0007EBF0C /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B95A5AC2AD5A6E0007EBF0C /* APIError.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		40E4F56A2ADEB79500DA6CF4 /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		5B95A5A82AD5A572007EBF0C /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		5B95A5AA2AD5A696007EBF0C /* URLSessionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionProvider.swift; sourceTree = "<group>"; };
 		5B95A5AC2AD5A6E0007EBF0C /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 				5BD9FD912AD4245A00EE70B7 /* Networking */,
 				5BD9FD8E2AD423AB00EE70B7 /* Controller */,
 				5BD9FD8D2AD423A800EE70B7 /* App */,
+				40E4F56A2ADEB79500DA6CF4 /* Comments.swift */,
 			);
 			path = Weather;
 			sourceTree = "<group>";
@@ -396,6 +399,7 @@
 				5BCAA98E2ADD641D0083AEC6 /* ToastShowable.swift in Sources */,
 				5BCAA96E2AD7E11B0083AEC6 /* DayOfWeekView.swift in Sources */,
 				5BCAA9842ADD48380083AEC6 /* SearchResultDTO.swift in Sources */,
+				40E4F56B2ADEB79500DA6CF4 /* Comments.swift in Sources */,
 				5BCAA9882ADD59B80083AEC6 /* AlertControllerShowable.swift in Sources */,
 				5BCAA9762ADA71E10083AEC6 /* WeatherViewControllerUseCase.swift in Sources */,
 				5BCAA9622AD6C6910083AEC6 /* WeeklyWeatherDTO.swift in Sources */,
