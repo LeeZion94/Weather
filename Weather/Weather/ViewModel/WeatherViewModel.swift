@@ -8,7 +8,7 @@
 import RxSwift
 import RxCocoa
 
-final class WeatherViewModel {
+final class WeatherViewModel: ViewModelType {
     struct Input {
         let weatherTrigger: Observable<Coordinate>
     }
