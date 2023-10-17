@@ -86,10 +86,18 @@ extension WeatherViewController {
     
     private func bindForecastFetchFailure(forecastFetchFailure: Observable<String>) {
         forecastFetchFailure.bind { errorMessage in
-            DispatchQueue.main.async {
-                self.showAlert(message: errorMessage, style: .alert)
-            }
+            self.showForecastFetchFailureAlert(errorMessage: errorMessage)
         }.disposed(by: disposeBag)
     }
 }
 
+// MARK: - Alert
+extension WeatherViewController {
+    private func showForecastFetchFailureAlert(errorMessage: String) {
+        let checkAlertAction: UIAlertAction = .init(title: "확인", style: .default)
+        
+        DispatchQueue.main.async {
+            self.showAlert(title: "네트워크 에러", message: errorMessage, style: .alert, actionList: [checkAlertAction])
+        }
+    }
+}
