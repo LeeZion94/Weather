@@ -127,9 +127,9 @@ extension WeatherViewController {
             }.disposed(by: disposeBag)
     }
     
-    private func bindForecastFetchFailure(forecastFetchFailure: Driver<String?>) {
+    private func bindForecastFetchFailure(forecastFetchFailure: Driver<String>) {
         forecastFetchFailure
-            .compactMap { $0 }
+            .filter { $0.count != 0 }
             .drive { [unowned self] errorMessage in
                 self.showForecastFetchFailureAlert(errorMessage: errorMessage)
             }.disposed(by: disposeBag)

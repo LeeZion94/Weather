@@ -18,13 +18,13 @@ final class WeatherViewModel {
         let dayOfWeek: Driver<String?>
         let hourlyWeather: Driver<[HourlyWeatherDTO]?>
         let weeklyWeatehr: Driver<([WeeklyWeatherDTO], [DetailWeatherDTO])?>
-        let forecastFetchFailure: Driver<String?>
+        let forecastFetchFailure: Driver<String>
     }
     
     private let weatherRepository: WeatherRepositoryType
     private let weatherViewControllerUseCase: WeatherViewControllerUseCaseType
     
-    private let forecastFetchFailureTrigger =  PublishSubject<String?>()
+    private let forecastFetchFailureTrigger =  PublishRelay<String>()
     
     init(weatherRepository: WeatherRepositoryType,
          weatherViewControllerUseCase: WeatherViewControllerUseCaseType) {
@@ -39,7 +39,7 @@ final class WeatherViewModel {
                 case .success(let forecastResult):
                     return forecastResult
                 case .failure(let error):
-                    self.forecastFetchFailureTrigger.onNext(error.errorDescription)
+                    self.forecastFetchFailureTrigger.accept(error.errorDescription)
                     return nil
                 }
             }
@@ -68,6 +68,6 @@ final class WeatherViewModel {
                       dayOfWeek: dayOfWeek,
                       hourlyWeather: hourlyWeather,
                       weeklyWeatehr: weeklyWeather,
-                      forecastFetchFailure: forecastFetchFailureTrigger.asDriver(onErrorJustReturn: nil))
+                      forecastFetchFailure: forecastFetchFailureTrigger.asDriver(onErrorJustReturn: ""))
     }
 }
