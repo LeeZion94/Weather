@@ -20,7 +20,7 @@ final class WeatherViewController: UIViewController, AlertControllerShowable {
     
     private var weatherTrigger = PublishSubject<Coordinate>()
     
-    private lazy var activityIndicatorView: UIActivityIndicatorView = {
+    private let activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: .large)
         
         activityIndicatorView.hidesWhenStopped = true
