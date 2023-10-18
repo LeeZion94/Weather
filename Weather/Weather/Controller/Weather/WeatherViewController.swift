@@ -87,7 +87,9 @@ extension WeatherViewController {
     private func bindTodayWeather(todayWeather: Driver<TodayWeatherDTO?>) {
         todayWeather
             .compactMap { $0 }
-            .drive { [unowned self] todayWeatherDTO in
+            .drive { [weak self] todayWeatherDTO in
+                guard let self else { return }
+                
                 self.activityIndicatorView.stopAnimating()
                 self.weatherView.setUpTodayWeatherViewContents(locationName: self.location.name,
                                                                todayWeatherDTO: todayWeatherDTO)
@@ -97,24 +99,24 @@ extension WeatherViewController {
     private func bindDayOfWeek(dayOfWeek: Driver<String?>) {
         dayOfWeek
             .compactMap { $0 }
-            .drive { [unowned self] dayOfWeek in
-                self.weatherView.setUpDayOfWeekView(day: dayOfWeek)
+            .drive { [weak self] dayOfWeek in
+                self?.weatherView.setUpDayOfWeekView(day: dayOfWeek)
             }.disposed(by: disposeBag)
     }
     
     private func bindHourlyWeather(hourlyWeather: Driver<[HourlyWeatherDTO]?>) {
         hourlyWeather
             .compactMap { $0 }
-            .drive { [unowned self] hourlyWeatherDTOList in
-                self.weatherView.setUpHourlyWeatherViewContents(hourlyWeatherDTOList: hourlyWeatherDTOList)
+            .drive { [weak self] hourlyWeatherDTOList in
+                self?.weatherView.setUpHourlyWeatherViewContents(hourlyWeatherDTOList: hourlyWeatherDTOList)
             }.disposed(by: disposeBag)
     }
     
     private func bindWeeklyWeather(weeklyWeather: Driver<([WeeklyWeatherDTO], [DetailWeatherDTO])?>) {
         weeklyWeather
             .compactMap { $0 }
-            .drive { [unowned self] (weeklyWeatherDTOList, detailWeatherDTOList) in
-                self.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList,
+            .drive { [weak self] (weeklyWeatherDTOList, detailWeatherDTOList) in
+                self?.weatherView.setUpDetailWeatherViewContents(weeklyWeatherDTOList: weeklyWeatherDTOList,
                                                                 detailWeatherDTOList: detailWeatherDTOList)
             }.disposed(by: disposeBag)
     }
@@ -122,8 +124,8 @@ extension WeatherViewController {
     private func bindForecastFetchFailure(forecastFetchFailure: Driver<String>) {
         forecastFetchFailure
             .filter { $0.count != 0 }
-            .drive { [unowned self] errorMessage in
-                self.showForecastFetchFailureAlert(errorMessage: errorMessage)
+            .drive { [weak self] errorMessage in
+                self?.showForecastFetchFailureAlert(errorMessage: errorMessage)
             }.disposed(by: disposeBag)
     }
 }
